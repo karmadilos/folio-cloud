@@ -1,0 +1,45 @@
+.Main{
+    display: flex;
+    flex-direction: column;
+    margin: 50px auto;
+    width: 50%;
+}
+
+.Main .button{
+    display: flex;
+    flex-direction: column;
+}
+.Main .button button{
+    margin: 10px auto;
+    border: 0;
+    outline: none;
+}
+.Main .button .login{
+    margin-top: 20px;
+    border-radius: 5px;
+    color: white;
+    height: 40px;
+    width: 80px;
+    background-color: dodgerblue;
+}
+.Main .button .login:hover{
+    background-color: rgb(3, 111, 219);
+}
+
+.Main .button a{
+    margin: 0 auto;
+}
+.Main .button .signup{
+    border-radius: 5px;
+    height: 40px;
+    width: 80px;
+    background-color: rgb(240, 240, 240);
+}
+.Main .button .signup:hover{
+    background-color: rgb(214, 212, 212);
+}
+input{
+    height: 30px;
+    outline: none;
+}
+

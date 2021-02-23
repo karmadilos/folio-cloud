@@ -1,0 +1,32 @@
+.Signup{
+    display: flex;
+    flex-direction: column;
+    margin: 50px auto;
+    width: 50%;
+}
+
+.Signup .button{
+    display: flex;
+    flex-direction: column;
+}
+.Signup .button button{
+    margin: 10px auto;
+    border: 0;
+    outline: none;
+}
+.Signup .button .signup{
+    margin-top: 20px;
+    border-radius: 5px;
+    color: white;
+    height: 40px;
+    width: 80px;
+    background-color: dodgerblue;
+}
+.Signup .button .signup:hover{
+    background-color: rgb(3, 111, 219);
+}
+input{
+    height: 30px;
+    outline: none;
+}
+
