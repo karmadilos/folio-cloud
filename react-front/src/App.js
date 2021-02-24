@@ -9,7 +9,7 @@ function App() {
       <Nav/>
       <Switch>
         <Route exact path="/"><Main/></Route>
-        <Route path="/Sign-up/"><Signup/></Route>
+        <Route path="/signup/"><Signup/></Route>
       </Switch>
     </div>
   );
