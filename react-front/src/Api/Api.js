@@ -9,12 +9,12 @@ export async function Signup(data) {
     })
 }
 
-export async function Login(data){
-    const res =await axios.post(url+'login',data)
+export function Login(data){
+    const res = axios.post(url+'login',data)
     .then((response) => {
         if(response.data.access_token){
-            localStorage.setItem("token",(response.data.access_token));
-            localStorage.setItem("user_id",(response.data.user_id));
+            localStorage.setItem("token",response.data.access_token);
+            localStorage.setItem("user_id",response.data.user_id);
         }
     })
 }

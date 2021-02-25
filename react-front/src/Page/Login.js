@@ -4,7 +4,7 @@ import * as api from '../Api/Api'
 import './Login.css'
 import { NavLink } from 'react-router-dom'
 
-const id = window.localStorage.getItem('user_id');
+
 export function Login(){
     const history = useHistory();
     const [input, setInput] = useState({
@@ -25,6 +25,7 @@ export function Login(){
         data.append('email',input.email);
         data.append('password',input.password);
         api.Login(data);
+        const id = window.localStorage.getItem('user_id');
         history.push(`/user/${id}`);
     }
 
