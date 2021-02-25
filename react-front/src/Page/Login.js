@@ -24,9 +24,7 @@ export function Login(){
         const data = new FormData();
         data.append('email',input.email);
         data.append('password',input.password);
-        api.Login(data);
-        const id = window.localStorage.getItem('user_id');
-        history.push(`/user/${id}`);
+        api.Login(data,history);
     }
 
     return<>

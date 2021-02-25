@@ -1,6 +1,7 @@
 import axios from 'axios';
 const token = window.localStorage.getItem('token');
 
+
 const url = 'http://localhost:5000/'
 export async function Signup(data) {
     await axios.post(url+'signup',data)
@@ -9,12 +10,14 @@ export async function Signup(data) {
     })
 }
 
-export function Login(data){
+export function Login(data,history){
     const res = axios.post(url+'login',data)
     .then((response) => {
         if(response.data.access_token){
             localStorage.setItem("token",response.data.access_token);
             localStorage.setItem("user_id",response.data.user_id);
+            const id = window.localStorage.getItem('user_id');
+            history.push(`/user/${id}`);
         }
     })
 }
