@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useHistory} from "react-router";
-import axios from 'axios';
 import './Signup.css'
+import * as api from '../Api/Api'
 
 
 export function Signup(){
@@ -26,12 +26,12 @@ export function Signup(){
         data.append('email',input.email);
         data.append('password',input.password);
         data.append('name',input.name);
-        console.log(data);
-        await axios.post('http://localhost:5000/signup',data)
-        .then((response) => {
-            console.log(JSON.stringify(response));
-        })
-        history.push('/')
+        api.Signup(data);
+        // await axios.post('http://localhost:5000/signup',data)
+        // .then((response) => {
+        //     console.log(JSON.stringify(response));
+        // })
+        history.push('/login')
     }
 
     return<>

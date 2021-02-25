@@ -1,6 +1,7 @@
 import pymysql
 from flask import Flask, jsonify, request, session, render_template
 from flask_restful import reqparse, abort, Api, Resource
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 from flask_cors import CORS
@@ -18,6 +19,8 @@ db = pymysql.connect(
 )
 cursor = db.cursor()
 
+app.config["JWT_SECRET_KEY"] = "super-secret"
+jwt = JWTManager(app)
 app.config.from_mapping(SECRET_KEY='dev')
 
 @app.route('/signup', methods=('GET', 'POST'))
@@ -60,7 +63,7 @@ def register():
     return jsonify(status = "fail", result = {"error": error})
 
 
-@app.route('/', methods=('GET', 'POST'))
+@app.route('/login', methods=('GET', 'POST'))
 def login():
     # POST 요청을 받았다면?
     if request.method == 'POST':
@@ -69,8 +72,8 @@ def login():
         
         error = None
         
-        sql = 'SELECT email, password FROM user WHERE email = %s'
-        cursor.execute(sql, (email,))
+        sql = 'SELECT email, password, name FROM user WHERE email = %s'
+        cursor.execute(sql, (email))
         user = cursor.fetchone()
         
         # 입력한 유저의 정보가 없을 때
@@ -88,15 +91,23 @@ def login():
             session.clear()
             # 지금 로그인한 유저의 정보로 session을 등록합니다.
             session['user_id'] = user[0]
-            return jsonify(status = "success", result = {"email": email, "session": session['user_id']})
-
+            access_token = create_access_token(identity=email)
+            return jsonify(access_token = access_token, user_id = user[2])
     return jsonify(status = "fail", result = {"error": error})
+
+@app.route("/protected", methods=["GET"])
+@jwt_required()
+def protected():
+    # Access the identity of the current user with get_jwt_identity
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200
 
 
 @app.route('/logout')
 def logout():
     # 현재 session을 비워줍니다.
     session.clear()
+    print(session)
     return jsonify(status = "success", result = {"msg": "logout!"})
 
     
