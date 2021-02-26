@@ -13,7 +13,7 @@ function App() {
         <Route exact path="/"><Main/></Route>
         <Route path="/login/"><Login/></Route>
         <Route path="/signup/"><Signup/></Route>
-        <Route path="/user/:name"><User/></Route>
+        <Route path="/user/upload"><User/></Route>
       </Switch>
     </div>
   );

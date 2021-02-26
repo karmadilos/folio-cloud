@@ -13,7 +13,7 @@ create table if not exists education(
     major varchar(16) not null,
     state int not null,
     primary key(id),
-    foreign key(user_id) references user (id) 
+    foreign key(id) references user (id) 
 );
 
 create table if not exists awards(
@@ -21,16 +21,17 @@ create table if not exists awards(
     a_name varchar(16) not null,
     a_description varchar(64) not null,
     primary key(id),
-    foreign key(user_id) references user (id) 
+    foreign key(id) references user (id) 
 );
 
 create table if not exists project(
     id int not null AUTO_INCREMENT,
-    p_name varchar(64) not null,
+    p_name varchar(16) not null,
+    p_description varchar(64) not null,
     start_date date not null,
     end_date date not null,
     primary key(id),
-    foreign key(user_id) references user (id) 
+    foreign key(id) references user (id) 
 );
 
 create table if not exists certificates(
@@ -39,5 +40,13 @@ create table if not exists certificates(
     c_agency varchar(16) not null,
     issue_date date not null,
     primary key(id),
-    foreign key(user_id) references user (id) 
+    foreign key(id) references user (id) 
+);
+
+create table if not exists profile(
+    id int not null AUTO_INCREMENT,
+    introduce varchar(64) not null,
+    img varchar(512) not null,
+    primary key(id),
+    foreign key(id) references user (id) 
 );

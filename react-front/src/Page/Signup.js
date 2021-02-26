@@ -27,10 +27,6 @@ export function Signup(){
         data.append('password',input.password);
         data.append('name',input.name);
         api.Signup(data);
-        // await axios.post('http://localhost:5000/signup',data)
-        // .then((response) => {
-        //     console.log(JSON.stringify(response));
-        // })
         history.push('/login')
     }
 

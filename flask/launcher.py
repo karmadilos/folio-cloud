@@ -14,7 +14,7 @@ db = pymysql.connect(
     port=3306,
     user='root',
     password='',
-    db='racer',
+    db='project',
     charset='utf8'
 )
 cursor = db.cursor()
@@ -22,6 +22,11 @@ cursor = db.cursor()
 app.config["JWT_SECRET_KEY"] = "super-secret"
 jwt = JWTManager(app)
 app.config.from_mapping(SECRET_KEY='dev')
+
+parser = reqparse.RequestParser()
+parser.add_argument("email")
+parser.add_argument("password")
+parser.add_argument("name")
 
 @app.route('/signup', methods=('GET', 'POST'))
 def register():
@@ -72,7 +77,7 @@ def login():
         
         error = None
         
-        sql = 'SELECT email, password, name FROM user WHERE email = %s'
+        sql = 'SELECT id,email, password, name FROM user WHERE email = %s'
         cursor.execute(sql, (email))
         user = cursor.fetchone()
         
@@ -82,7 +87,7 @@ def login():
         
         # 비밀번호가 틀렸을 때
         # user는 tuple 타입으로 데이터 반환, user[0]은 email user[1]은 password 
-        if not (user == None or check_password_hash(user[1], password)):
+        if not (user == None or check_password_hash(user[2], password)):
             error = 'password가 틀렸습니다.'
 
         # 정상적인 정보를 요청받았다면?
@@ -91,16 +96,25 @@ def login():
             session.clear()
             # 지금 로그인한 유저의 정보로 session을 등록합니다.
             session['user_id'] = user[0]
-            access_token = create_access_token(identity=email)
-            return jsonify(access_token = access_token, user_id = user[2])
+            access_token = create_access_token(identity=(email,user[0]))
+            return jsonify(access_token = access_token, user_id = user[3])
     return jsonify(status = "fail", result = {"error": error})
 
-@app.route("/protected", methods=["GET"])
+
+parser = reqparse.RequestParser()
+parser.add_argument("img_url")
+@app.route("/user/upload", methods=["GET","POST"])
 @jwt_required()
-def protected():
-    # Access the identity of the current user with get_jwt_identity
-    current_user = get_jwt_identity()
-    return jsonify(logged_in_as=current_user), 200
+def upload():
+    if request.method == 'POST' and 'file' in request.files:
+        current_user = get_jwt_identity()
+        print(current_user)
+        file = request.files['file']
+        print(file)
+        sql = 'INSERT INTO profile img VALUES %s)'
+        cursor.execute(sql,"file")
+        return jsonify(status = "success", result = "result")
+
 
 
 @app.route('/logout')
