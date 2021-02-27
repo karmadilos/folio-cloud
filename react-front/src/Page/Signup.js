@@ -6,27 +6,21 @@ import * as api from '../Api/Api'
 
 export function Signup(){
     const history = useHistory();
-    const [input, setInput] = useState({
+    const [inputs, setInputs] = useState({
         email: '',
         password: '',
         c_password: '',
         name: ''
     });
 
-    const setInputData = (key, data) => {
-        setInput({
-            ...input,
-            [key]: data,
-        })
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        setInputs({...inputs, [name]: value})
     };
 
     async function signup(e){
         e.preventDefault();
-        const data = new FormData();
-        data.append('email',input.email);
-        data.append('password',input.password);
-        data.append('name',input.name);
-        api.Signup(data);
+        api.Signup(inputs);
         history.push('/login')
     }
 
@@ -34,13 +28,13 @@ export function Signup(){
     <div className="Signup">
         <form onSubmit={signup}>
             <p>Email address</p>
-            <input name="email" type="text" placeholder="Enter Email" onChange={(e) => setInputData('email',e.target.value)}/>
+            <input name="email"  type="text" placeholder="Enter Email" onChange={handleChange}/>
             <p>Password</p>
-            <input name="password" type="password" placeholder="Password" onChange={(e) => setInputData('password',e.target.value)}/>
+            <input name="password"  type="password" placeholder="Password" onChange={handleChange}/>
             <p>Confirm Password</p>
-            <input type="password" placeholder="Password" onChange={(e) => setInputData('c_password',e.target.value)}/>
+            <input name="c_password" type="password"  placeholder="Password" onChange={handleChange}/>
             <p>Name</p>
-            <input name="name" type="text" placeholder="Name" onChange={(e) => setInputData('name',e.target.value)}/>
+            <input name="name"  type="text" placeholder="Name" onChange={handleChange}/>
             <div className="button">
                 <button className="signup" type="submit">회원가입</button>
             </div>

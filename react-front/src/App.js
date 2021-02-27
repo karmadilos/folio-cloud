@@ -9,12 +9,14 @@ function App() {
   return (
     <div>        
       <Nav/>
+      <Route>
       <Switch>
         <Route exact path="/"><Main/></Route>
         <Route path="/login/"><Login/></Route>
         <Route path="/signup/"><Signup/></Route>
         <Route path="/user/upload"><User/></Route>
       </Switch>
+      </Route>
     </div>
   );
 }

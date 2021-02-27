@@ -33,10 +33,10 @@ def register():
     # POST 요청을 받았다면?
     if request.method == 'POST':
         # 아이디와 비밀번호를 폼에서 가져옵니다.
-        
-        email = request.form['email']
-        password = request.form['password']
-        name = request.form['name']
+        데이터 = request.get_json()
+        email = 데이터['email']
+        password = 데이터['password']
+        name = 데이터['name']
 
         error = None
 
@@ -72,12 +72,13 @@ def register():
 def login():
     # POST 요청을 받았다면?
     if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
+        데이터 = request.get_json()
+        email = 데이터['email']
+        password = 데이터['password']
         
         error = None
         
-        sql = 'SELECT id,email, password, name FROM user WHERE email = %s'
+        sql = 'SELECT id, email, password FROM user WHERE email = %s'
         cursor.execute(sql, (email))
         user = cursor.fetchone()
         
@@ -86,18 +87,14 @@ def login():
             error = '등록되지 않은 계정입니다.'
         
         # 비밀번호가 틀렸을 때
-        # user는 tuple 타입으로 데이터 반환, user[0]은 email user[1]은 password 
+        # user는 tuple 타입으로 데이터 반환, user[1]은 email user[2]은 password 
         if not (user == None or check_password_hash(user[2], password)):
             error = 'password가 틀렸습니다.'
 
         # 정상적인 정보를 요청받았다면?
         if error is None:
-            # 로그인을 위해 기존 session을 비웁니다.
-            session.clear()
-            # 지금 로그인한 유저의 정보로 session을 등록합니다.
-            session['user_id'] = user[0]
             access_token = create_access_token(identity=(email,user[0]))
-            return jsonify(access_token = access_token, user_id = user[3])
+            return jsonify(access_token = access_token, user_id = user[0])
     return jsonify(status = "fail", result = {"error": error})
 
 
@@ -115,15 +112,6 @@ def upload():
         cursor.execute(sql,"file")
         return jsonify(status = "success", result = "result")
 
-
-
-@app.route('/logout')
-def logout():
-    # 현재 session을 비워줍니다.
-    session.clear()
-    print(session)
-    return jsonify(status = "success", result = {"msg": "logout!"})
-
     
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000)
+    app.run('0.0.0.0', port=5000, debug=True)
