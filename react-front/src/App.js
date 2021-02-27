@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.css'
 import { Login } from './Page/Login';
 import { Signup } from './Page/Signup'
 import { Route,Switch } from 'react-router-dom';
@@ -14,7 +15,7 @@ function App() {
         <Route exact path="/"><Main/></Route>
         <Route path="/login/"><Login/></Route>
         <Route path="/signup/"><Signup/></Route>
-        <Route path="/user/upload"><User/></Route>
+        <Route path="/user/"><User/></Route>
       </Switch>
       </Route>
     </div>
