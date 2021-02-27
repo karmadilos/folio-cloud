@@ -1,6 +1,7 @@
 import pymysql
 from flask import Flask, jsonify, request, session, render_template
 from flask_restful import reqparse, abort, Api, Resource
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 from flask_cors import CORS
@@ -13,22 +14,29 @@ db = pymysql.connect(
     port=3306,
     user='root',
     password='',
-    db='racer',
+    db='project',
     charset='utf8'
 )
 cursor = db.cursor()
 
+app.config["JWT_SECRET_KEY"] = "super-secret"
+jwt = JWTManager(app)
 app.config.from_mapping(SECRET_KEY='dev')
+
+parser = reqparse.RequestParser()
+parser.add_argument("email")
+parser.add_argument("password")
+parser.add_argument("name")
 
 @app.route('/signup', methods=('GET', 'POST'))
 def register():
     # POST 요청을 받았다면?
     if request.method == 'POST':
         # 아이디와 비밀번호를 폼에서 가져옵니다.
-        
-        email = request.form['email']
-        password = request.form['password']
-        name = request.form['name']
+        데이터 = request.get_json()
+        email = 데이터['email']
+        password = 데이터['password']
+        name = 데이터['name']
 
         error = None
 
@@ -60,17 +68,18 @@ def register():
     return jsonify(status = "fail", result = {"error": error})
 
 
-@app.route('/', methods=('GET', 'POST'))
+@app.route('/login', methods=('GET', 'POST'))
 def login():
     # POST 요청을 받았다면?
     if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
+        데이터 = request.get_json()
+        email = 데이터['email']
+        password = 데이터['password']
         
         error = None
         
-        sql = 'SELECT email, password FROM user WHERE email = %s'
-        cursor.execute(sql, (email,))
+        sql = 'SELECT id, email, password FROM user WHERE email = %s'
+        cursor.execute(sql, (email))
         user = cursor.fetchone()
         
         # 입력한 유저의 정보가 없을 때
@@ -78,27 +87,31 @@ def login():
             error = '등록되지 않은 계정입니다.'
         
         # 비밀번호가 틀렸을 때
-        # user는 tuple 타입으로 데이터 반환, user[0]은 email user[1]은 password 
-        if not (user == None or check_password_hash(user[1], password)):
+        # user는 tuple 타입으로 데이터 반환, user[1]은 email user[2]은 password 
+        if not (user == None or check_password_hash(user[2], password)):
             error = 'password가 틀렸습니다.'
 
         # 정상적인 정보를 요청받았다면?
         if error is None:
-            # 로그인을 위해 기존 session을 비웁니다.
-            session.clear()
-            # 지금 로그인한 유저의 정보로 session을 등록합니다.
-            session['user_id'] = user[0]
-            return jsonify(status = "success", result = {"email": email, "session": session['user_id']})
-
+            access_token = create_access_token(identity=(email,user[0]))
+            return jsonify(access_token = access_token, user_id = user[0])
     return jsonify(status = "fail", result = {"error": error})
 
 
-@app.route('/logout')
-def logout():
-    # 현재 session을 비워줍니다.
-    session.clear()
-    return jsonify(status = "success", result = {"msg": "logout!"})
+parser = reqparse.RequestParser()
+parser.add_argument("img_url")
+@app.route("/user/upload", methods=["GET","POST"])
+@jwt_required()
+def upload():
+    if request.method == 'POST' and 'file' in request.files:
+        current_user = get_jwt_identity()
+        print(current_user)
+        file = request.files['file']
+        print(file)
+        sql = 'INSERT INTO profile img VALUES %s)'
+        cursor.execute(sql,"file")
+        return jsonify(status = "success", result = "result")
 
     
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000)
+    app.run('0.0.0.0', port=5000, debug=True)
