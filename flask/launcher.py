@@ -112,6 +112,50 @@ def upload():
         cursor.execute(sql,"file")
         return jsonify(status = "success", result = "result")
 
+parser.add_argument('s_name')
+parser.add_argument('major')
+parser.add_argument('state')
+parser.add_argument('id')
+
+class Education(Resource):
+    @jwt_required()
+    def get(self):
+        current_user = get_jwt_identity()      
+        args = parser.parse_args()     
+        sql = "SELECT * FROM `education` WHERE user_id = (%s)"
+        cursor.execute(sql, (args["id"]))
+        result = cursor.fetchall()
+        return jsonify(status = "success", result = result)
+
+    @jwt_required()    
+    def post(self):
+        current_user = get_jwt_identity()
+        args = parser.parse_args()
+        sql = "INSERT INTO `education` (`id`,`s_name`,`major`,`state`) \
+            VALUES (%s,%s,%s,%s)"
+        cursor.execute(sql, (current_user["id"],args["s_name"],args["major"],args['state']))
+        db.commit()
+        
+        return jsonify(status = "success", result = {"college": args["college"]})
+    
+    @jwt_required()    
+    def put(self):
+        current_user = get_jwt_identity()
+        args = parser.parse_args()
+        
+        return jsonify(status = "success", result = {})
+    
+    @jwt_required()
+    def delete(self):
+        current_user = get_jwt_identity()
+        args = parser.parse_args()
+        sql = "DELETE FROM `education` WHERE `id` = %s AND `user_id` = %s"
+        cursor.execute(sql, (args["id"], current_user['id']))
+        db.commit()
+        
+        return jsonify(status = "success", result = {"id": args["id"]})
+api.add_resource(Education, '/education')
+
     
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
