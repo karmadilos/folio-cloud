@@ -8,8 +8,9 @@
     border-bottom: solid 1px #cdcdcd;
 }
 
-.Nav h3{
-    margin-left: 1%;
+.Nav h5{
+    margin: 0 0 0 1%;
+    align-items: center;
 }
 
 .Nav nav{
@@ -21,7 +22,8 @@
     flex-direction: row;
     justify-content: flex-end;
     list-style: none;
-    margin-right: 5%;
+    margin: 0 2% 0 0;
+    
 }
 
 .Nav nav ul li{
