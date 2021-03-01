@@ -14,7 +14,7 @@ db = pymysql.connect(
     port=3306,
     user='root',
     password='',
-    db='project',
+    db='racer',
     charset='utf8'
 )
 cursor = db.cursor()
@@ -97,65 +97,193 @@ def login():
             return jsonify(access_token = access_token, user_id = user[0])
     return jsonify(status = "fail", result = {"error": error})
 
-
-parser = reqparse.RequestParser()
-parser.add_argument("img_url")
-@app.route("/user/upload", methods=["GET","POST"])
-@jwt_required()
-def upload():
-    if request.method == 'POST' and 'file' in request.files:
-        current_user = get_jwt_identity()
-        print(current_user)
-        file = request.files['file']
-        print(file)
-        sql = 'INSERT INTO profile img VALUES %s)'
-        cursor.execute(sql,"file")
-        return jsonify(status = "success", result = "result")
-
-parser.add_argument('s_name')
-parser.add_argument('major')
-parser.add_argument('state')
-parser.add_argument('id')
+class User(Resource):
+    @jwt_required()
+    def get(self):
+        current_user = get_jwt_identity()   
+        sql = "SELECT * FROM `user` WHERE id = (%s)"
+        cursor.execute(sql, (current_user[1]))
+        user = cursor.fetchone()
+        print(user)
+        return jsonify(status = "success", result = user)
+    
+    # @jwt_required()    
+    # def put(self):
+    #     current_user = get_jwt_identity()
+    #     args = parser.parse_args()
+        
+    #     return jsonify(status = "success", result = {})
+    
+    # @jwt_required()
+    # def delete(self):
+    #     current_user = get_jwt_identity()
+    #     args = parser.parse_args() 
+    #     sql = "DELETE FROM `education` WHERE `id` = %s AND `user_id` = %s"
+    #     cursor.execute(sql, (args['num'], current_user['id']))
+    #     db.commit()
+        
+        # return jsonify(status = "success", result = "delete")
+api.add_resource(User, '/user')
 
 class Education(Resource):
     @jwt_required()
     def get(self):
-        current_user = get_jwt_identity()      
-        args = parser.parse_args()     
+        current_user = get_jwt_identity()   
         sql = "SELECT * FROM `education` WHERE user_id = (%s)"
-        cursor.execute(sql, (args["id"]))
-        result = cursor.fetchall()
-        return jsonify(status = "success", result = result)
+        cursor.execute(sql, (current_user[1]))
+        education = cursor.fetchall()
+        print(education)
+        return jsonify(status = "success", result = education)
 
     @jwt_required()    
     def post(self):
         current_user = get_jwt_identity()
-        args = parser.parse_args()
-        sql = "INSERT INTO `education` (`id`,`s_name`,`major`,`state`) \
-            VALUES (%s,%s,%s,%s)"
-        cursor.execute(sql, (current_user["id"],args["s_name"],args["major"],args['state']))
+        # args = parser.parse_args()
+        데이터 = request.get_json()
+        s_name = 데이터['s_name']
+        major = 데이터['major']
+        state = 1
+        sql = "INSERT INTO education (`s_name`,`major`,`state`,`user_id`) VALUES (%s,%s,%s,%s)"
+        cursor.execute(sql, (s_name, major, state ,current_user[1]))
         db.commit()
-        
-        return jsonify(status = "success", result = {"college": args["college"]})
+        return jsonify(status = "success", result = {"s_name": s_name})
     
-    @jwt_required()    
-    def put(self):
-        current_user = get_jwt_identity()
-        args = parser.parse_args()
+    # @jwt_required()    
+    # def put(self):
+    #     current_user = get_jwt_identity()
+    #     args = parser.parse_args()
         
-        return jsonify(status = "success", result = {})
+    #     return jsonify(status = "success", result = {})
     
-    @jwt_required()
-    def delete(self):
-        current_user = get_jwt_identity()
-        args = parser.parse_args()
-        sql = "DELETE FROM `education` WHERE `id` = %s AND `user_id` = %s"
-        cursor.execute(sql, (args["id"], current_user['id']))
-        db.commit()
+    # @jwt_required()
+    # def delete(self):
+    #     current_user = get_jwt_identity()
+    #     args = parser.parse_args() 
+    #     sql = "DELETE FROM `education` WHERE `id` = %s AND `user_id` = %s"
+    #     cursor.execute(sql, (args['num'], current_user['id']))
+    #     db.commit()
         
-        return jsonify(status = "success", result = {"id": args["id"]})
+        # return jsonify(status = "success", result = "delete")
 api.add_resource(Education, '/education')
 
+class Award(Resource):
+    @jwt_required()
+    def get(self):
+        current_user = get_jwt_identity()   
+        sql = "SELECT * FROM `awards` WHERE user_id = (%s)"
+        cursor.execute(sql, (current_user[1]))
+        awards = cursor.fetchall()
+        return jsonify(status = "success", result = awards)
+
+    @jwt_required()    
+    def post(self):
+        current_user = get_jwt_identity()
+        데이터 = request.get_json()
+        a_name = 데이터['a_name']
+        a_description = 데이터['a_description']
+        sql = "INSERT INTO awards (`a_name`,`a_description`,`user_id`) VALUES (%s,%s,%s)"
+        cursor.execute(sql, (a_name, a_description, current_user[1]))
+        db.commit()
+        return jsonify(status = "success", result = {"a_name": a_name})
+    
+    # @jwt_required()    
+    # def put(self):
+    #     current_user = get_jwt_identity()
+    #     args = parser.parse_args()
+        
+    #     return jsonify(status = "success", result = {})
+    
+    # @jwt_required()
+    # def delete(self):
+    #     current_user = get_jwt_identity()
+    #     args = parser.parse_args() 
+    #     sql = "DELETE FROM `education` WHERE `id` = %s AND `user_id` = %s"
+    #     cursor.execute(sql, (args['num'], current_user['id']))
+    #      db.commit()
+        
+    #     return jsonify(status = "success", result = "delete")
+api.add_resource(Award, '/awards')
+
+class Certificate(Resource):
+    @jwt_required()
+    def get(self):
+        current_user = get_jwt_identity()   
+        args = parser.parse_args()     
+        sql = "SELECT * FROM `certificates` WHERE user_id = (%s)"
+        cursor.execute(sql, (current_user[1]))
+        certificates = cursor.fetchall()
+        return jsonify(status = "success", result = certificates)
+
+    @jwt_required()    
+    def post(self):
+        current_user = get_jwt_identity()
+        # args = parser.parse_args()
+        데이터 = request.get_json()
+        c_name = 데이터['c_name']
+        c_agency = 데이터['c_agency']
+        issue_date = "2099-09-09"
+        sql = "INSERT INTO certificates (`c_name`,`c_agency`,`issue_date`,`user_id`) VALUES (%s,%s,%s,%s)"
+        cursor.execute(sql, (c_name, c_agency, issue_date ,current_user[1]))
+        db.commit()
+        return jsonify(status = "success", result = {"c_name": c_name})
+    
+    # @jwt_required()    
+    # def put(self):
+    #     current_user = get_jwt_identity()
+    #     args = parser.parse_args()
+        
+    #     return jsonify(status = "success", result = {})
+    
+    # @jwt_required()
+    # def delete(self):
+    #     current_user = get_jwt_identity()
+    #     args = parser.parse_args() 
+    #     sql = "DELETE FROM `education` WHERE `id` = %s AND `user_id` = %s"
+    #     cursor.execute(sql, (args['num'], current_user['id']))
+    #     db.commit()
+        
+        # return jsonify(status = "success", result = "delete")
+api.add_resource(Certificate, '/certificates')
+
+class Project(Resource):
+    @jwt_required()
+    def get(self):
+        current_user = get_jwt_identity()
+        sql = "SELECT * FROM `project` WHERE user_id = (%s)"
+        cursor.execute(sql, (current_user[1]))
+        project = cursor.fetchall()
+        return jsonify(status = "success", result = project)
+
+    @jwt_required()    
+    def post(self):
+        current_user = get_jwt_identity()
+        데이터 = request.get_json()
+        p_name = 데이터['p_name']
+        p_description = 데이터['p_description']
+        start_date = '2000-01-01'
+        end_date = '2001-01-01'
+        sql = "INSERT INTO project (`p_name`,`p_description`,`start_date`,`end_date`,`user_id`) VALUES (%s,%s,%s,%s,%s)"
+        cursor.execute(sql, (p_name, p_description, start_date, end_date, current_user[1]))
+        db.commit()
+        return jsonify(status = "success", result = {"p_name": p_name})
+    
+    # @jwt_required()    
+    # def put(self):
+    #     current_user = get_jwt_identity()
+    #     args = parser.parse_args()
+        
+    #     return jsonify(status = "success", result = {})
+    
+    # @jwt_required()
+    # def delete(self):
+    #     current_user = get_jwt_identity()
+    #     args = parser.parse_args() 
+    #     sql = "DELETE FROM `education` WHERE `id` = %s AND `user_id` = %s"
+    #     cursor.execute(sql, (args['num'], current_user['id']))
+    #     db.commit()
+        
+        # return jsonify(status = "success", result = "delete")
+api.add_resource(Project, '/project')
     
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

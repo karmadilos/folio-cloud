@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import {Form, Button,InputGroup,FormControl} from 'react-bootstrap';
+import {Form, Button} from 'react-bootstrap';
+import * as api from '../../../Api/Api'
 export function Education_Write(props) {
     const [inputs, setInputs] = useState({
         s_name : "",
         major : "",
-        state : 0,
     });
 
     const onChangeInput = e => {
@@ -13,24 +13,19 @@ export function Education_Write(props) {
     };
 
 
-    const addForm = () => {
-        props.addEducation(inputs);
+    const addForm = (e) => {
+        e.preventDefault();
+        api.addEducation(inputs);
     };
 
     return (
         <Form onSubmit={addForm}>
             <Form.Group controlId="formBasicName">
-                <Form.Control name="s_name" type="text" placeholder="학교 이름" />
+                <Form.Control name="s_name" type="text" placeholder="학교 이름" onChange={onChangeInput}/>
             </Form.Group>
             <Form.Group controlId="formBasicMajor">
-                <Form.Control name="major" type="text" placeholder="전공" />
+                <Form.Control name="major" type="text" placeholder="전공" onChange={onChangeInput}/>
             </Form.Group>
-            <InputGroup>
-                <InputGroup.Radio aria-label="Radio button for following text input" />
-                <InputGroup.Radio aria-label="Radio button for following text input" />
-                <InputGroup.Radio aria-label="Radio button for following text input" />
-                <InputGroup.Radio aria-label="Radio button for following text input" />
-            </InputGroup>
             <Button variant="primary" type="submit">
                 확인
             </Button>

@@ -16,7 +16,8 @@ export function Login(data,history){
         if(response.data.access_token){
             localStorage.setItem("token",response.data.access_token);
             localStorage.setItem("user_id",response.data.user_id);
-            history.push(`/user/upload`);
+            history.push(`/user`);
+            window.location.reload();
         }
     })
 }
@@ -27,22 +28,21 @@ export function Logout(){
     localStorage.removeItem("user_id");
 }
 
-export async function readEducation(){
-    await axios.get(url+'education',{
+export async function readInfo(d){
+    return await axios.get(url+d,{
         headers: {
         Authorization: `Bearer ${token}`
       }
-    })
-    .then((res) => {
-        return res.json();
+    }).then((res) => {
+        return res.data.result;
     })
     .catch((e)=>{
         console.log(e);
-    })
+    });
 }
 
-export async function addEducation(data){
-    await axios.post(url+'education',data,{
+export async function addInfo(d,data){
+    await axios.post(url+d,data,{
         headers: {
         Authorization: `Bearer ${token}`
       }
@@ -54,6 +54,21 @@ export async function addEducation(data){
         console.log(e);
     })
 }
+
+// export async function deleteEducation(data){
+//     await axios.delete(url+'education',data,{
+//         headers: {
+//         Authorization: `Bearer ${token}`
+//       }
+//     })
+//     .then((res) => {
+//         console.log(JSON.stringify(res));
+//         window.location.reload();
+//     })
+//     .catch((e)=>{
+//         console.log(e);
+//     })
+// }
 
 export function Upload(data){
     axios.post(url+'user/upload',data,{

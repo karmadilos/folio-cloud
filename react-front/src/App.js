@@ -12,8 +12,7 @@ function App() {
       <Nav/>
       <Route>
       <Switch>
-        <Route exact path="/"><Main/></Route>
-        <Route path="/login/"><Login/></Route>
+        <Route exact path="/login"><Login/></Route>
         <Route path="/signup/"><Signup/></Route>
         <Route path="/user/"><User/></Route>
       </Switch>
