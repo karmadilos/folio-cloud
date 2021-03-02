@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import {Form, Button} from 'react-bootstrap';
+import {Form, Button, Row, Col, FormText} from 'react-bootstrap';
 import * as api from '../../../Api/Api'
 export function Education_Write(props) {
     const [inputs, setInputs] = useState({
         s_name : "",
         major : "",
+        state : "",
     });
 
     const onChangeInput = e => {
         const { name, value } = e.target;
         setInputs({ ...inputs, [name]: value });
     };
-
 
     const addForm = (e) => {
         e.preventDefault();
@@ -27,11 +27,37 @@ export function Education_Write(props) {
             <Form.Group controlId="formBasicMajor">
                 <Form.Control name="major" type="text" placeholder="전공" onChange={onChangeInput}/>
             </Form.Group>
-            {/* <Form.Group>
-                <Form.Check inline label="재학중" type='radio' value="재학" id='radio-1'/>
-                <Form.Check inline label="휴학중" type='radio' value="휴학" id='radio-2'/>
-                <Form.Check inline label="졸업" type='radio' value="졸업"/>
-          </Form.Group> */}
+            <div className="mb-3">
+                <Form.Check
+                type="radio"
+                label="재학 중"
+                value="재학 중"
+                name="state"
+                id="state"
+                onChange={onChangeInput}
+                />
+                <Form.Check
+                type="radio"
+                label="학사 졸업"
+                value="학사 졸업"
+                name="state"
+                id="state"
+                />
+                <Form.Check
+                type="radio"
+                label="석사 졸업"
+                value="석사 졸업"
+                name="state"
+                id="state"
+                />
+                <Form.Check
+                type="radio"
+                label="박사 졸업"
+                value="박사 졸업"
+                name="state"
+                id="state"
+                />
+            </div>
             <Button variant="primary" type="submit" >
                 확인
             </Button>

@@ -23,7 +23,6 @@ export function Login(data,history){
 }
 
 export function Logout(){
-    axios.get(url+'logout')
     localStorage.removeItem("token");
     localStorage.removeItem("user_id");
 }
@@ -55,20 +54,19 @@ export async function addInfo(d,data){
     })
 }
 
-// export async function deleteEducation(data){
-//     await axios.delete(url+'education',data,{
-//         headers: {
-//         Authorization: `Bearer ${token}`
-//       }
-//     })
-//     .then((res) => {
-//         console.log(JSON.stringify(res));
-//         window.location.reload();
-//     })
-//     .catch((e)=>{
-//         console.log(e);
-//     })
-// }
+export async function deleteInfo(d,data){
+    await axios.delete(url+d,{
+        headers: {
+        Authorization: `Bearer ${token}`
+      },data
+    })
+    .then((res) => {
+        console.log(JSON.stringify(res));
+    })
+    .catch((e)=>{
+        console.log(e);
+    })
+}
 
 export function Upload(data){
     axios.post(url+'user/upload',data,{

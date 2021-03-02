@@ -14,7 +14,7 @@ db = pymysql.connect(
     port=3306,
     user='root',
     password='',
-    db='racer',
+    db='project',
     charset='utf8'
 )
 cursor = db.cursor()
@@ -138,15 +138,28 @@ class Education(Resource):
     @jwt_required()    
     def post(self):
         current_user = get_jwt_identity()
-        # args = parser.parse_args()
         데이터 = request.get_json()
         s_name = 데이터['s_name']
         major = 데이터['major']
-        state = 1
-        sql = "INSERT INTO education (`s_name`,`major`,`state`,`user_id`) VALUES (%s,%s,%s,%s)"
-        cursor.execute(sql, (s_name, major, state ,current_user[1]))
-        db.commit()
-        return jsonify(status = "success", result = {"s_name": s_name})
+        state = 데이터['state']
+        error = None
+        print(s_name,major,state)
+        # s_name 없다면?
+        if not s_name:
+            error = 's_name 유효하지 않습니다.'
+        # major 없다면?
+        if not major:
+            error = 'major 유효하지 않습니다.'
+        # state 없다면?
+        elif not state:
+            error = 'state 유효하지 않습니다.'
+        # 에러가 발생하지 않았다면 회원가입 실행
+        if error is None:
+            sql = "INSERT INTO education (`s_name`,`major`,`state`,`user_id`) VALUES (%s,%s,%s,%s)"
+            cursor.execute(sql, (s_name, major, state ,current_user[1]))
+            db.commit()
+            return jsonify(status = "success", result = {"s_name": s_name})
+        return jsonify(status = "fail", result = {"error": error})
     
     # @jwt_required()    
     # def put(self):
@@ -155,15 +168,16 @@ class Education(Resource):
         
     #     return jsonify(status = "success", result = {})
     
-    # @jwt_required()
-    # def delete(self):
-    #     current_user = get_jwt_identity()
-    #     args = parser.parse_args() 
-    #     sql = "DELETE FROM `education` WHERE `id` = %s AND `user_id` = %s"
-    #     cursor.execute(sql, (args['num'], current_user['id']))
-    #     db.commit()
-        
-        # return jsonify(status = "success", result = "delete")
+    @jwt_required()
+    def delete(self):
+        current_user = get_jwt_identity()
+        데이터 = request.get_json()
+        post_id = 데이터['index'] + 1
+        print(post_id)
+        sql = "DELETE FROM `education` WHERE `post_id` = %s AND `user_id` = %s"
+        cursor.execute(sql, (post_id, current_user[1]))
+        db.commit()        
+        return jsonify(status = "success", result = "delete")
 api.add_resource(Education, '/education')
 
 class Award(Resource):
