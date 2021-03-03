@@ -1,6 +1,5 @@
 import axios from 'axios';
 const token = window.localStorage.getItem('token');
-// const id = window.localStorage.getItem('user_id');
 const url = 'http://localhost:5000/'
 
 export async function Signup(data) {
@@ -27,8 +26,8 @@ export function Logout(){
     localStorage.removeItem("user_id");
 }
 
-export async function readInfo(d){
-    return await axios.get(url+d,{
+export async function readInfo(category){
+    return await axios.get(url+category,{
         headers: {
         Authorization: `Bearer ${token}`
       }
@@ -40,8 +39,8 @@ export async function readInfo(d){
     });
 }
 
-export async function addInfo(d,data){
-    await axios.post(url+d,data,{
+export async function addInfo(category,data){
+    await axios.post(url+category,data,{
         headers: {
         Authorization: `Bearer ${token}`
       }
@@ -54,8 +53,8 @@ export async function addInfo(d,data){
     })
 }
 
-export async function deleteInfo(d,data){
-    await axios.delete(url+d,{
+export async function deleteInfo(category,data){
+    await axios.delete(url+category,{
         headers: {
         Authorization: `Bearer ${token}`
       },data

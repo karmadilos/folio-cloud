@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from 'react-bootstrap';
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Awards } from "../component/User_detail/Awards/Awards";
 import { Certificates } from "../component/User_detail/Certificates/Certificates";
 import { Educations } from "../component/User_detail/Education/Educations";

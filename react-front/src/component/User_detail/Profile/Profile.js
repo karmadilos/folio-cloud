@@ -1,13 +1,11 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { Card } from 'react-bootstrap';
-import * as api from '../../../Api/Api';
-import { Thumnail } from './Thumnail';
-import {Profile_Card} from './Profile_Card';
+
+import {ProfileCard} from './ProfileCard';
 export function Profile(props){
-    const [state, setState] = useState(false);
     return<>
         <Card border="dark" style={{ width: '40rem' }}>
-            <Profile_Card info={props}/>
+            <ProfileCard info={props}/>
         </Card>
     </>
 }

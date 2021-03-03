@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {Form, Button} from 'react-bootstrap';
 import * as api from '../../../Api/Api'
-export function Project_Write(props) {
+export function ProjectWrite(props) {
     const [inputs, setInputs] = useState({
         p_name : "",
         p_description : "",

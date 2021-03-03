@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import {Form, Button} from 'react-bootstrap';
 import * as api from '../../../Api/Api'
-export function Award_Write(props) {
+export function CertificateWrite(props) {
     const [inputs, setInputs] = useState({
-        a_name : "",
-        a_description : "",
+        c_name : "",
+        c_agency : "",
     });
 
     const onChangeInput = e => {
@@ -15,17 +15,17 @@ export function Award_Write(props) {
 
     const addForm = (e) => {
         e.preventDefault();
-        const k = "awards"
+        const k = "certificates"
         api.addInfo(k,inputs);
     };
 
     return (
         <Form onSubmit={addForm}>
             <Form.Group controlId="formBasicName">
-                <Form.Control name="a_name" type="text" placeholder="수상 이름" onChange={onChangeInput}/>
+                <Form.Control name="c_name" type="text" placeholder="자격증 이름" onChange={onChangeInput}/>
             </Form.Group>
             <Form.Group controlId="formBasicMajor">
-                <Form.Control name="a_description" type="text" placeholder="수상 내용" onChange={onChangeInput}/>
+                <Form.Control name="c_agency" type="text" placeholder="자격증 인증기관 " onChange={onChangeInput}/>
             </Form.Group>
             <Button variant="primary" type="submit" >
                 확인

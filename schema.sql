@@ -12,7 +12,6 @@ create table if not exists education(
     s_name varchar(64) not null,
     major varchar(16) not null,
     state varchar(64) not null,
-    post_id int not null,
     user_id int not null,
     primary key(id),
     foreign key(user_id) references user (id) 

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import {Form, Button, Row, Col, FormText} from 'react-bootstrap';
+import {Form, Button,} from 'react-bootstrap';
 import * as api from '../../../Api/Api'
-export function Education_Write(props) {
+export function EducationWrite(props) {
+    console.log(props);
+    const k = "educations/"
     const [inputs, setInputs] = useState({
         s_name : "",
         major : "",
         state : "",
-        post_id : 1,
     });
 
     const onChangeInput = e => {
@@ -16,8 +17,7 @@ export function Education_Write(props) {
 
     const addForm = (e) => {
         e.preventDefault();
-        setInputs({post_id : post_id+1})
-        const k = "education"
+        console.log(inputs);
         api.addInfo(k,inputs);
     };
 

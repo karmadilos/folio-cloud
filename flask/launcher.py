@@ -5,6 +5,7 @@ from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_requir
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 from flask_cors import CORS
+
 app = Flask(__name__)
 api = Api(app)
 CORS(app)
@@ -37,9 +38,7 @@ def register():
         email = 데이터['email']
         password = 데이터['password']
         name = 데이터['name']
-
         error = None
-
         # 이메일이 없다면?
         if not email:
             error = 'Email이 유효하지 않습니다.'
@@ -66,7 +65,6 @@ def register():
         
     # 에러 메세지를 반환합니다.
     return jsonify(status = "fail", result = {"error": error})
-
 
 @app.route('/login', methods=('GET', 'POST'))
 def login():
@@ -106,7 +104,6 @@ class User(Resource):
         user = cursor.fetchone()
         print(user)
         return jsonify(status = "success", result = user)
-    
     # @jwt_required()    
     # def put(self):
     #     current_user = get_jwt_identity()
@@ -143,7 +140,6 @@ class Education(Resource):
         major = 데이터['major']
         state = 데이터['state']
         error = None
-        print(s_name,major,state)
         # s_name 없다면?
         if not s_name:
             error = 's_name 유효하지 않습니다.'
@@ -162,29 +158,28 @@ class Education(Resource):
         return jsonify(status = "fail", result = {"error": error})
     
     # @jwt_required()    
-    # def put(self):
+    # def put(self,id):
     #     current_user = get_jwt_identity()
     #     args = parser.parse_args()
         
     #     return jsonify(status = "success", result = {})
     
     @jwt_required()
-    def delete(self):
+    def delete(self,id):
         current_user = get_jwt_identity()
         데이터 = request.get_json()
-        post_id = 데이터['post_id']
-        print(post_id)
-        sql = "DELETE FROM `education` WHERE `post_id` = %s AND `user_id` = %s"
+        post_id = 데이터['id']
+        sql = "DELETE FROM `education` WHERE `id` = %s"
         cursor.execute(sql, (post_id, current_user[1]))
         db.commit()        
         return jsonify(status = "success", result = "delete")
-api.add_resource(Education, '/education')
+api.add_resource(Education, '/education', '/education/<int:id>')
 
 class Award(Resource):
     @jwt_required()
     def get(self):
         current_user = get_jwt_identity()   
-        sql = "SELECT * FROM `awards` WHERE user_id = (%s)"
+        sql = "SELECT * FROM `awards` WHERE user_id = %s"
         cursor.execute(sql, (current_user[1]))
         awards = cursor.fetchall()
         return jsonify(status = "success", result = awards)
@@ -223,7 +218,7 @@ class Certificate(Resource):
     def get(self):
         current_user = get_jwt_identity()   
         args = parser.parse_args()     
-        sql = "SELECT * FROM `certificates` WHERE user_id = (%s)"
+        sql = "SELECT * FROM `certificates` WHERE user_id = %s"
         cursor.execute(sql, (current_user[1]))
         certificates = cursor.fetchall()
         return jsonify(status = "success", result = certificates)

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 
-export function Award_Card(props){
+export function ProjectCard(props){
     return<Card border="light">
             <Card.Body>
                 <Card.Text>{props.name}</Card.Text>
