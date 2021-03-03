@@ -6,6 +6,7 @@ export function Education_Write(props) {
         s_name : "",
         major : "",
         state : "",
+        post_id : 1,
     });
 
     const onChangeInput = e => {
@@ -15,6 +16,7 @@ export function Education_Write(props) {
 
     const addForm = (e) => {
         e.preventDefault();
+        setInputs({post_id : post_id+1})
         const k = "education"
         api.addInfo(k,inputs);
     };
@@ -42,21 +44,21 @@ export function Education_Write(props) {
                 value="학사 졸업"
                 name="state"
                 id="state"
-                />
+                onChange={onChangeInput}/>
                 <Form.Check
                 type="radio"
                 label="석사 졸업"
                 value="석사 졸업"
                 name="state"
                 id="state"
-                />
+                onChange={onChangeInput}/>
                 <Form.Check
                 type="radio"
                 label="박사 졸업"
                 value="박사 졸업"
                 name="state"
                 id="state"
-                />
+                onChange={onChangeInput}/>
             </div>
             <Button variant="primary" type="submit" >
                 확인

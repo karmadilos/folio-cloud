@@ -172,7 +172,7 @@ class Education(Resource):
     def delete(self):
         current_user = get_jwt_identity()
         데이터 = request.get_json()
-        post_id = 데이터['index'] + 1
+        post_id = 데이터['post_id']
         print(post_id)
         sql = "DELETE FROM `education` WHERE `post_id` = %s AND `user_id` = %s"
         cursor.execute(sql, (post_id, current_user[1]))
