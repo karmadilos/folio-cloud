@@ -1,6 +1,7 @@
 import axios from 'axios';
 const token = window.localStorage.getItem('token');
-const url = 'http://localhost:5000/'
+// const url = `${window.location.hostname}:5000/` 배포용 url
+const url = "http://localhost:5000/"
 
 export async function Signup(data) {
     await axios.post(url+'signup',data)
@@ -15,7 +16,7 @@ export function Login(data,history){
         if(response.data.access_token){
             localStorage.setItem("token",response.data.access_token);
             localStorage.setItem("user_id",response.data.user_id);
-            history.push(`/user`);
+            history.push(`/`);
             window.location.reload();
         }
     })
@@ -52,9 +53,22 @@ export async function addInfo(category,data){
         console.log(e);
     })
 }
+export async function fixInfo(category,data){
+    await axios.put(url+category+data.id,data,{
+        headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then((res) => {
+        console.log(JSON.stringify(res));
+    })
+    .catch((e)=>{
+        console.log(e);
+    })
+}
 
 export async function deleteInfo(category,data){
-    await axios.delete(url+category,{
+    await axios.delete(url+category+data.id,{
         headers: {
         Authorization: `Bearer ${token}`
       },data

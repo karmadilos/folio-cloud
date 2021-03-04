@@ -4,7 +4,6 @@ import * as api from '../Api/Api'
 import './Login.css'
 import { NavLink } from 'react-router-dom'
 
-
 export function Login(){
     const history = useHistory();
     const [inputs, setInputs] = useState({
@@ -16,7 +15,6 @@ export function Login(){
         const {name, value} = e.target;
         setInputs({...inputs, [name]: value})
     };
-
 
     function login(e){
         e.preventDefault();

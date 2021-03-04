@@ -102,8 +102,12 @@ class User(Resource):
         sql = "SELECT * FROM `user` WHERE id = (%s)"
         cursor.execute(sql, (current_user[1]))
         user = cursor.fetchone()
-        print(user)
-        return jsonify(status = "success", result = user)
+        result ={
+            "id" : user[0],
+            "email" : user[1],
+            "name" : user[3],
+        }
+        return jsonify(status = "success", result = result)
     # @jwt_required()    
     # def put(self):
     #     current_user = get_jwt_identity()
@@ -120,7 +124,7 @@ class User(Resource):
     #     db.commit()
         
         # return jsonify(status = "success", result = "delete")
-api.add_resource(User, '/user')
+api.add_resource(User, '/users', '/users/<int:id>')
 
 class Education(Resource):
     @jwt_required()
@@ -128,9 +132,15 @@ class Education(Resource):
         current_user = get_jwt_identity()   
         sql = "SELECT * FROM `education` WHERE user_id = (%s)"
         cursor.execute(sql, (current_user[1]))
-        education = cursor.fetchall()
-        print(education)
-        return jsonify(status = "success", result = education)
+        educations = cursor.fetchall()
+        result = [{
+            "id" : education[0],
+            "s_name" : education[1],
+            "major" : education[2],
+            "state" : education[3],
+            "user_id" : education[4],
+        } for education in educations]
+        return jsonify(status = "success", result = result)
 
     @jwt_required()    
     def post(self):
@@ -168,12 +178,12 @@ class Education(Resource):
     def delete(self,id):
         current_user = get_jwt_identity()
         데이터 = request.get_json()
-        post_id = 데이터['id']
+        id = 데이터['id']
         sql = "DELETE FROM `education` WHERE `id` = %s"
-        cursor.execute(sql, (post_id, current_user[1]))
+        cursor.execute(sql, id)
         db.commit()        
         return jsonify(status = "success", result = "delete")
-api.add_resource(Education, '/education', '/education/<int:id>')
+api.add_resource(Education, '/educations/', '/educations/<int:id>')
 
 class Award(Resource):
     @jwt_required()

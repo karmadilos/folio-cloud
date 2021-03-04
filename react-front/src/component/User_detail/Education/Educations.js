@@ -1,25 +1,46 @@
-import { EducationCard } from './EducationCard'
 import { Card,Button } from 'react-bootstrap';
-import { Link} from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { EducationWrite } from './EducationWrite';
 import * as api from '../../../Api/Api';
-import {useEffect} from 'react';
-export function Educations(props){
-    const [mode, setMode] = useState(false);
-    const k='educations/';
+import { Education } from './Education';
+export function Educations({user_id, isState}){
+    const category='educations/';
+    const [mode, setMode]= useState("");
+    const [educations, setEducations] = useState([]);
+    const [inputs, setInputs] = useState({
+        s_name : "",
+        major : "",
+        state : "",
+    });
+    const ChangeInput = e => {
+        const { name, value } = e.target;
+        setInputs({ ...inputs, [name]: value });
+    };
+
+    const PostEdu = () =>{
+        api.addInfo(category,inputs);
+    }
+
+    const UpdateEdu = () =>{
+        api.fixInfo(category,inputs);
+    }
+
+    useEffect(() => {
+        const server = async () => {
+            setEducations(await api.readInfo(category)); 
+        }
+        server();
+    },[]);
+    console.log(educations);
     return<>
-        <Card border="dark" style={{ width: '40rem' }}>
-            <h5>학력</h5>
-            {props.info && props.info.map((data) => <Card.Body><EducationCard  name ={data[1]} major={data[2]} state={data[3]}/>
-            <Link onClick={()=> setMode(!mode)}>Edit{data[4]} </Link>
-            <Link onClick={() => {
-                data = { id : data[0] }
-                api.deleteInfo(k,data)
-            }}  style={{color:"red"}}>Delete</Link>
-            </Card.Body>)}
-            {mode && <EducationWrite setMode ={setMode} mode={mode}/>}
-            <Button style={{width:'3rem'}} onClick={(e) => setMode(!mode)}>+</Button>
+        <Card className="justify-content-md-center p-3" border="dark" style={{ width: '50rem' }}>
+            <Card.Title>학력</Card.Title>
+            {educations && educations.map((education) =>{
+                <Education category={category} education={education} isState={isState}/>
+                console.log(education);
+            })}
+            {mode && <EducationWrite mode={mode} UpdateEdu={UpdateEdu} PostEdu={PostEdu} setMode={setMode} ChangeInput={ChangeInput}/>}
+            {isState && <Button onClick={() => setMode("post")} style={{width:'3rem'}}>+</Button>}
         </Card>
     </>
 }
