@@ -68,6 +68,7 @@ export async function fixInfo(category,data){
 }
 
 export async function deleteInfo(category,data){
+    console.log(data);
     await axios.delete(url+category+data.id,{
         headers: {
         Authorization: `Bearer ${token}`
@@ -75,6 +76,7 @@ export async function deleteInfo(category,data){
     })
     .then((res) => {
         console.log(JSON.stringify(res));
+        window.location.reload();
     })
     .catch((e)=>{
         console.log(e);

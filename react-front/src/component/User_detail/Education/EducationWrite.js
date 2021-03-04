@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {Form, Button,} from 'react-bootstrap';
-export function EducationWrite({mode,PostEdu ,setMode, ChangeInput}) {
-    console.log(mode);
+export function EducationWrite({mode, PostEdu, UpdateEdu, education, setMode, setInputs,ChangeInput}) {
+    function Submit(){
+        if (mode == "update"){
+            UpdateEdu()
+        }
+        else{
+            PostEdu()
+        }
+    }
+
     return (
-        <Form onSubmit={PostEdu} >
+        <Form onSubmit={() => Submit} >
             <Form.Group controlId="formBasicName">
                 <Form.Control name="s_name" type="text" placeholder="학교 이름" onChange={ChangeInput}/>
             </Form.Group>

@@ -1,6 +1,5 @@
 import { Card,Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
-import { EducationWrite } from './EducationWrite';
 import * as api from '../../../Api/Api';
 import { Education } from './Education';
 export function Educations({user_id, isState}){
@@ -31,15 +30,13 @@ export function Educations({user_id, isState}){
         }
         server();
     },[]);
-    console.log(educations);
+    console.log(mode);
     return<>
         <Card className="justify-content-md-center p-3" border="dark" style={{ width: '50rem' }}>
             <Card.Title>학력</Card.Title>
-            {educations && educations.map((education) =>{
-                <Education category={category} education={education} isState={isState}/>
-                console.log(education);
-            })}
-            {mode && <EducationWrite mode={mode} UpdateEdu={UpdateEdu} PostEdu={PostEdu} setMode={setMode} ChangeInput={ChangeInput}/>}
+            {educations && educations.map((education,index) =>
+                <Education key={index} category={category} education={education} isState={isState} mode={mode} PostEdu={PostEdu} setMode={setMode} UpdateEdu={UpdateEdu} setInputs={setInputs} ChangeInput={ChangeInput}/>
+            )}
             {isState && <Button onClick={() => setMode("post")} style={{width:'3rem'}}>+</Button>}
         </Card>
     </>
