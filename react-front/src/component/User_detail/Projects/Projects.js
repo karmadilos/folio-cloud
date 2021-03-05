@@ -11,8 +11,8 @@ export function Projects({isState}){
     const [enddate, setEnddate] = useState(new Date());
     const [inputs, setInputs] = useState({
         id : "",
-        a_name : "",
-        a_description : "",
+        p_name : "",
+        p_description : "",
     });
 
     const dateToString = (date) => {
@@ -37,6 +37,7 @@ export function Projects({isState}){
 
     const UpdateData = () =>{
         const data = {
+            id : inputs.id,
             p_name : inputs.p_name,
             p_description : inputs.p_description,
             start_date : dateToString(startdate),

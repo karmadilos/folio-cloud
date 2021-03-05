@@ -1,6 +1,7 @@
 import React from "react";
 import {Form, Button,} from 'react-bootstrap';
 export function EducationWrite({mode, PostEdu, UpdateEdu, inputs, setMode, ChangeInput}) {
+    console.log(inputs.state);
     return (
         <Form className="justify-content-md-center p-3" onSubmit={(e) => {e.preventDefault(); mode =="update" ? UpdateEdu() : PostEdu()} } >
             <Form.Group controlId="formBasicName">
@@ -17,6 +18,7 @@ export function EducationWrite({mode, PostEdu, UpdateEdu, inputs, setMode, Chang
                 value="재학 중"
                 name="state"
                 id="state"
+                checked={inputs.state === "재학 중"}
                 onChange={ChangeInput}
                 />
                 <Form.Check
@@ -26,6 +28,7 @@ export function EducationWrite({mode, PostEdu, UpdateEdu, inputs, setMode, Chang
                 value="학사 졸업"
                 name="state"
                 id="state"
+                checked={inputs.state === "학사 졸업"}
                 onChange={ChangeInput}/>
                 <Form.Check
                 inline
@@ -34,6 +37,7 @@ export function EducationWrite({mode, PostEdu, UpdateEdu, inputs, setMode, Chang
                 value="석사 졸업"
                 name="state"
                 id="state"
+                checked={inputs.state === "석사 졸업"}
                 onChange={ChangeInput}/>
                 <Form.Check
                 inline
@@ -42,6 +46,7 @@ export function EducationWrite({mode, PostEdu, UpdateEdu, inputs, setMode, Chang
                 value="박사 졸업"
                 name="state"
                 id="state"
+                checked={inputs.state === "박사 졸업"}
                 onChange={ChangeInput}/>
             </div>
             <div className="justify-content-md-center">

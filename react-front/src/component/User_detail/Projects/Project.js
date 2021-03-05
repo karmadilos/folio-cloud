@@ -1,7 +1,7 @@
 import { Button, Card } from 'react-bootstrap';
 import { ProjectCard } from './ProjectCard'
 import * as api from '../../../Api/Api'
-export function Project({category,startdate,setMode,setStartdate, project, isState, setInputs,enddate,setEnddate}){
+export function Project({category,setMode,setStartdate, project, isState, setInputs,setEnddate}){
     return<>
         <Card.Body >
             <ProjectCard  project={project}/>
@@ -11,8 +11,8 @@ export function Project({category,startdate,setMode,setStartdate, project, isSta
                     p_name : project['p_name'],
                     p_description : project['p_description'],
                 });
-                setStartdate(startdate);
-                setEnddate(enddate);
+                setStartdate(new Date(project['start_date']));
+                setEnddate(new Date(project['end_date']));
                 }}>Edit </Button>
                 <Button variant="outline" onClick={() => api.deleteInfo(category,project)} style={{color:"red"}}>
                     Delete

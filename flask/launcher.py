@@ -262,7 +262,7 @@ class Certificate(Resource):
             "id" : certificate[0],
             "c_name" : certificate[1],
             "c_agency" : certificate[2],
-            "issue_date" : certificate[3],
+            "issue_date" : certificate[3].strftime('%Y-%m-%d'),
             "user_id" : certificate[4],
         } for certificate in certificates]
         return jsonify(status = "success", result = result)
@@ -317,8 +317,8 @@ class Project(Resource):
             "id" : project[0],
             "p_name" : project[1],
             "p_description" : project[2],
-            "start_date" : project[3],
-            "end_date" : project[4],
+            "start_date" : project[3].strftime('%Y-%m-%d'),
+            "end_date" : project[4].strftime('%Y-%m-%d'),
             "user_id" : project[5],
         } for project in projects]
         return jsonify(status = "success", result = result)
