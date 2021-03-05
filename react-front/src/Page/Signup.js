@@ -21,7 +21,7 @@ export function Signup(){
     async function signup(e){
         e.preventDefault();
         api.Signup(inputs);
-        history.push('/login')
+        history.push('/')
     }
 
     return<>

@@ -1,14 +1,11 @@
-import React, {useState} from 'react';
-import * as api from '../../../Api/Api';
-import { Thumnail } from './Thumnail';
+import React from 'react';
+import { Card } from 'react-bootstrap';
 
-export function Profile(){
-    const [img, setImg] = useState();
-
-
-    return(
-        <div>
-            <Thumnail/>
-        </div>
-    )
+import {ProfileCard} from './ProfileCard';
+export function Profile(props){
+    return<>
+        <Card>
+            <ProfileCard info={props}/>
+        </Card>
+    </>
 }

@@ -1,7 +1,8 @@
 import axios from 'axios';
 const token = window.localStorage.getItem('token');
-// const id = window.localStorage.getItem('user_id');
-const url = 'http://localhost:5000/'
+// const url = `${window.location.hostname}:5000/` 배포용 url
+const url = "http://localhost:5000/"
+
 export async function Signup(data) {
     await axios.post(url+'signup',data)
     .then((response) => {
@@ -15,18 +16,78 @@ export function Login(data,history){
         if(response.data.access_token){
             localStorage.setItem("token",response.data.access_token);
             localStorage.setItem("user_id",response.data.user_id);
-            history.push(`/user/upload`);
+            history.push(`/user/${response.data.user_id}`);
+            window.location.reload();
         }
     })
 }
 
 export function Logout(){
-    axios.get(url+'logout')
     localStorage.removeItem("token");
     localStorage.removeItem("user_id");
 }
 
-export  function Upload(data){
+export async function readInfo(category){
+    return await axios.get(url+category,{
+        headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((res) => {
+        return res.data.result;
+    })
+    .catch((e)=>{
+        console.log(e);
+    });
+}
+
+export async function addInfo(category,data){
+    console.log(data);
+    await axios.post(url+category,data,{
+        headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then((res) => {
+        console.log(JSON.stringify(res));
+        window.location.reload();
+    })
+    .catch((e)=>{
+        console.log(e);
+    })
+}
+export async function fixInfo(category,data){
+    console.log(data);
+    await axios.put(url+category+'/'+data.id,data,{
+        headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then((res) => {
+        console.log(JSON.stringify(res));
+        window.location.reload();
+    })
+    .catch((e)=>{
+        console.log(e);
+    })
+}
+
+export async function deleteInfo(category,data){
+    console.log(data);
+    await axios.delete(url+category+'/'+data.id,{
+        headers: {
+        Authorization: `Bearer ${token}`
+      },data
+    })
+    .then((res) => {
+        console.log(JSON.stringify(res));
+        window.location.reload();
+    })
+    .catch((e)=>{
+        console.log(e);
+    })
+}
+
+export function Upload(data){
     axios.post(url+'user/upload',data,{
         headers: {
         Authorization: `Bearer ${token}`
