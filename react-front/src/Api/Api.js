@@ -87,14 +87,16 @@ export async function deleteInfo(category,data){
     })
 }
 
-export function Upload(data){
-    axios.post(url+'user/upload',data,{
+export async function fixUser(category,data){
+    console.log(category);
+    await axios.put(url+category,data,{
         headers: {
         Authorization: `Bearer ${token}`
       }
     })
     .then((res) => {
-        console.log(JSON.stringify(res));
+        console.log(JSON.stringify(res)); 
+        window.location.reload();
     })
     .catch((e)=>{
         console.log(e);

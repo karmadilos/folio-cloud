@@ -60,10 +60,10 @@ export function Projects({isState}){
         server();
     },[]);
     return<>
-        <Card className="justify-content-md-center my-3 p-3" border="dark" style={{ width: '50rem' }}>
+        <Card className="justify-content-md-center my-3 p-3" style={{ width: '50rem' }}>
             <Card.Title>프로젝트</Card.Title>
             {projects && projects.map((project,index) =>
-                <Project key={index} category={category} project={project} isState={isState} mode={mode} PostData={PostData} setMode={setMode} UpdateData={UpdateData} setInputs={setInputs} ChangeInput={ChangeInput} startdate={startdate} setStartdate={setStartdate} enddate={enddate} setEnddate={setEnddate}/>
+                <Project key={index} category={category} project={project} isState={isState} mode={mode} PostData={PostData} setMode={setMode} UpdateData={UpdateData} setInputs={setInputs} ChangeInput={ChangeInput} startdate={startdate} setStartdate={setStartdate} enddate={enddate} setEnddate={setEnddate} dateToString={dateToString}/>
             )}
             {mode && <ProjectWrite mode={mode} UpdateData={UpdateData} PostData={PostData} setMode={setMode} inputs={inputs} setInputs={setInputs} ChangeInput={ChangeInput} startdate={startdate} setStartdate={setStartdate} enddate={enddate} setEnddate={setEnddate}/>}
             {isState && <CardGroup className="justify-content-md-center"><Button onClick={() => setMode("post")} style={{width:'3rem'}}>+</Button></CardGroup>}

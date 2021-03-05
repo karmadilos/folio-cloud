@@ -50,7 +50,7 @@ def register():
         elif not password:
             error = 'Password가 유효하지 않습니다.'
         # 이미 등록된 계정이라면?
-        sql = 'SELECT id FROM user WHERE email = %s'
+        sql = 'SELECT id FROM users WHERE email = %s'
         cursor.execute(sql, (email,))
         result = cursor.fetchone()
         if result is not None:
@@ -58,7 +58,7 @@ def register():
 
         # 에러가 발생하지 않았다면 회원가입 실행
         if error is None:
-            sql = "INSERT INTO `user` (`email`, `password`,`name`) VALUES (%s, %s, %s)"
+            sql = "INSERT INTO `users` (`email`, `password`,`name`) VALUES (%s, %s, %s)"
             cursor.execute(sql, ( email, generate_password_hash(password), name))
             db.commit()
             return jsonify(status = "success", result = {"name": name, "email": email})
@@ -77,7 +77,7 @@ def login():
         
         error = None
         
-        sql = 'SELECT id, email, password FROM user WHERE email = %s'
+        sql = 'SELECT id, email, password FROM users WHERE email = %s'
         cursor.execute(sql, (email))
         user = cursor.fetchone()
         
@@ -100,32 +100,31 @@ class User(Resource):
     @jwt_required()
     def get(self):
         current_user = get_jwt_identity()   
-        sql = "SELECT * FROM `user` WHERE id = (%s)"
+        sql = "SELECT * FROM `users` WHERE id = (%s)"
         cursor.execute(sql, (current_user[1]))
         user = cursor.fetchone()
         result ={
             "id" : user[0],
             "email" : user[1],
             "name" : user[3],
+            "intro" : user[4],
         }
         return jsonify(status = "success", result = result)
-    # @jwt_required()    
-    # def put(self):
-    #     current_user = get_jwt_identity()
-    #     args = parser.parse_args()
-        
-    #     return jsonify(status = "success", result = {})
+
+    @jwt_required()    
+    def put(self):
+        current_user = get_jwt_identity()
+        데이터 = request.get_json()
+        print(데이터)
+        name = 데이터['name']
+        email = 데이터['email']
+        intro = 데이터['intro']
+        sql = "UPDATE users SET `name` = %s,`email` = %s,`intro`= %s WHERE id = %s"
+        cursor.execute(sql, (name, email, intro ,current_user[1]))
+        db.commit()
+        return jsonify(status = "success", result = {"name": name})
     
-    # @jwt_required()
-    # def delete(self):
-    #     current_user = get_jwt_identity()
-    #     args = parser.parse_args() 
-    #     sql = "DELETE FROM `education` WHERE `id` = %s AND `user_id` = %s"
-    #     cursor.execute(sql, (args['num'], current_user['id']))
-    #     db.commit()
-        
-        # return jsonify(status = "success", result = "delete")
-api.add_resource(User, '/users', '/users/<int:id>')
+api.add_resource(User, '/users')
 
 class Education(Resource):
     @jwt_required()

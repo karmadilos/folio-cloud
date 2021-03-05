@@ -56,7 +56,7 @@ export function Certificates({isState}){
         server();
     },[]);
     return<>
-        <Card className="justify-content-md-center my-3 p-3" border="dark" style={{ width: '50rem' }}>
+        <Card className="justify-content-md-center my-3 p-3" style={{ width: '50rem' }}>
             <Card.Title>자격증</Card.Title>
             {certificates && certificates.map((certificate,index) =>
                 <Certificate key={index} category={category} certificate={certificate} isState={isState} mode={mode} PostData={PostData} setMode={setMode} UpdateData={UpdateData} setInputs={setInputs} ChangeInput={ChangeInput} startdate={startdate} setStartdate={setStartdate}/>

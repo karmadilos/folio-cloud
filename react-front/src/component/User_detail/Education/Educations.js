@@ -40,7 +40,7 @@ export function Educations({isState}){
         server();
     },[]);
     return<>
-        <Card className="justify-content-md-center my-3 p-3" border="dark" style={{ width: '50rem' }}>
+        <Card className="justify-content-md-center p-3" style={{ width: '50rem' }}>
             <Card.Title>학력</Card.Title>
             {educations && educations.map((education,index) =>
                 <Education key={index} category={category} education={education} isState={isState} mode={mode} PostEdu={PostEdu} setMode={setMode} UpdateEdu={UpdateEdu} setInputs={setInputs} ChangeInput={ChangeInput}/>

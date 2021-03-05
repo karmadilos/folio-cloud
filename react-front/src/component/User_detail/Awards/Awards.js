@@ -39,7 +39,7 @@ export function Awards({isState}){
         server();
     },[]);
     return<>
-        <Card className="justify-content-md-center my-3 p-3" border="dark" style={{ width: '50rem' }}>
+        <Card className="justify-content-md-center my-3 p-3" style={{ width: '50rem' }}>
             <Card.Title>수상이력</Card.Title>
             {awards && awards.map((award,index) =>
                 <Award key={index} category={category} award={award} isState={isState} mode={mode} PostData={PostData} setMode={setMode} UpdateData={UpdateData} setInputs={setInputs} ChangeInput={ChangeInput}/>

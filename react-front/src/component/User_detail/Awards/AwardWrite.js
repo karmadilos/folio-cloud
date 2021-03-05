@@ -1,5 +1,5 @@
 import React from "react";
-import {Form, Button,} from 'react-bootstrap';
+import {Form, Button} from 'react-bootstrap';
 export function AwardWrite({mode, PostData, UpdateData, inputs, setMode, ChangeInput}) {
     return (
         <Form className="justify-content-md-center p-3" onSubmit={(e) => {e.preventDefault(); mode =="update" ? UpdateData() : PostData()} } >

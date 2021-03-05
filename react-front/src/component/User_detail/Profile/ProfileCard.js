@@ -1,14 +1,45 @@
-import React from 'react';
-import { Card } from 'react-bootstrap';
-export function ProfileCard(props){
-    
-    const url = "https://picsum.photos/id/"+props.info.info[0]+"/1000/1000/"
-
-    return<Card className="m-1">
-            <Card.Img style={{width : '100px'}} variant="top"  src={url} className="justify-content-center"/> 
+import React, { useState } from 'react';
+import { Card, Row, Button } from 'react-bootstrap';
+import {ProfileCardWrite} from './ProfileCardWrite';
+import * as api from '../../../Api/Api'
+export function ProfileCard({user, isState, category}){
+    const [mode, setMode] =useState("");
+    const [inputs, setInputs] =useState({
+        name : "",
+        email : "",
+        intro : "",
+    });
+    const ChangeInput = e => {
+        const { name, value } = e.target;
+        setInputs({ ...inputs, [name]: value });
+    };
+    const UpdateDate = (e) =>{
+        e.preventDefault();
+        console.log(api.fixUser(category,inputs));
+        setInputs({
+            name : "",
+            email : "",
+            intro :"",             
+        });
+        setMode("");
+    }
+    const url = "https://picsum.photos/id/"+0+"/1000/1000/"
+    return<Card className="mb-2" >
             <Card.Body>
-                <Card.Text>이메일 : {props.info.info[1]}</Card.Text>
-                <Card.Text>이름 : {props.info.info[3]}</Card.Text>
+                <Row className="justify-content-md-center">
+                    <Card.Img className="mx-auto mb-3" style={{width : '100px'}} src={url}/> 
+                </Row>
+                <Card.Title className="h5">{user.name}</Card.Title>
+                <Card.Subtitle className="mb-2 text-muted h6">{user.email}</Card.Subtitle>
+                <Card.Text>{user.intro}</Card.Text>            
+                <Row className="justify-content-md-center">
+                    {isState &&<Button className variant="link" onClick={() => {setMode("edit"); setInputs({
+                    name : user['name'],
+                    email : user['email'],
+                    intro : user['intro']            
+                });}}>Edit </Button>}
+                </Row>
             </Card.Body>
+            {mode === "edit" && <ProfileCardWrite UpdateDate={UpdateDate} inputs={inputs} setMode={setMode} ChangeInput={ChangeInput}/>}
         </Card>
 }

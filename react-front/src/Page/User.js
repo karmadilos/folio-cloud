@@ -3,7 +3,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { useHistory } from "react-router-dom";
 import { Awards } from "../component/User_detail/Awards/Awards";
 import { Certificates } from "../component/User_detail/Certificates/Certificates";
-import { Profile } from "../component/User_detail/Profile/Profile";
+import { ProfileCard } from "../component/User_detail/Profile/ProfileCard";
 import { Projects } from "../component/User_detail/Projects/Projects";
 import * as api from "../Api/Api";
 import { Educations } from "../component/User_detail/Education/Educations";
@@ -28,8 +28,8 @@ export function User() {
     return (
         <Container fluid>
             <Row className="justify-content-md-center p-5">
-                <Col sm="3">
-                    {/* <Profile user_id={user.id} isState/> */}
+                <Col sm="4">
+                    <ProfileCard user={user} category={category} isState={user.id == current_user}/>
                 </Col>
                 <Col sm="8">
                     <Educations isState={user.id == current_user}/>
