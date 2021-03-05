@@ -41,6 +41,7 @@ export async function readInfo(category){
 }
 
 export async function addInfo(category,data){
+    console.log(data);
     await axios.post(url+category,data,{
         headers: {
         Authorization: `Bearer ${token}`

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 export function EducationCard({education}){
-    return<Card border="light">
+    return<Card>
             <Card.Body>
                 <Card.Text>{education.s_name}</Card.Text>
                 <Card.Text>{education.major} ({education.state})</Card.Text>

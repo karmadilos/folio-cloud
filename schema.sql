@@ -7,7 +7,7 @@ create table if not exists user(
     unique(email)
 );
 
-create table if not exists education(
+create table if not exists educations(
     id int not null AUTO_INCREMENT,
     s_name varchar(64) not null,
     major varchar(16) not null,
@@ -26,7 +26,7 @@ create table if not exists awards(
     foreign key(user_id) references user (id) 
 );
 
-create table if not exists project(
+create table if not exists projects(
     id int not null AUTO_INCREMENT,
     p_name varchar(16) not null,
     p_description varchar(64) not null,

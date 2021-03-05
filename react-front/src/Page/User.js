@@ -3,7 +3,6 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { useHistory } from "react-router-dom";
 import { Awards } from "../component/User_detail/Awards/Awards";
 import { Certificates } from "../component/User_detail/Certificates/Certificates";
-
 import { Profile } from "../component/User_detail/Profile/Profile";
 import { Projects } from "../component/User_detail/Projects/Projects";
 import * as api from "../Api/Api";
@@ -34,9 +33,9 @@ export function User() {
                 </Col>
                 <Col sm="8">
                     <Educations isState={user.id == current_user}/>
-                    {/* <Awards awards={awards} isState/> */}
+                    <Awards isState={user.id == current_user}/>
                     <Certificates isState={user.id == current_user}/>       
-                    {/* <Projects projects={projects} isState/> */}
+                    <Projects isState={user.id == current_user}/>
                 </Col>
             </Row>
         </Container>
