@@ -3,7 +3,6 @@ import {Form, Button,} from 'react-bootstrap';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 export function CertificateWrite({mode,inputs, PostData, UpdateData, setMode, ChangeInput, setStartdate, startdate}) {
-    console.log(startdate);
     return (
         <Form className="justify-content-md-center p-3" onSubmit={(e) => {e.preventDefault(); mode =="update" ? UpdateData() : PostData()} } >
             <Form.Group controlId="formBasicName">
@@ -16,6 +15,7 @@ export function CertificateWrite({mode,inputs, PostData, UpdateData, setMode, Ch
                 withPortal
                 className="date date-record"
                 placeholder="취득 날짜"
+                dateFormat="yyyy-MM-dd"
                 selected={startdate}
                 onChange={date => setStartdate(date)}
                 />

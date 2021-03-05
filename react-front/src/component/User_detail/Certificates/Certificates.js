@@ -40,7 +40,6 @@ export function Certificates({isState}){
             c_agency : inputs.c_agency,
             issue_date : dateToString(startdate)
         }
-        console.log(data);
         api.fixInfo(category,data);
         setInputs({
             c_name : "",

@@ -1,7 +1,7 @@
 import { Button, Card } from 'react-bootstrap';
 import { CertificateCard } from './CertificateCard'
 import * as api from '../../../Api/Api'
-export function Certificate({category,startdate,setMode,setStartdate, certificate, isState, setInputs,}){
+export function Certificate({category,setMode,setStartdate, certificate, isState, setInputs,}){
     return<>
         <Card.Body >
             <CertificateCard  certificate={certificate}/>
@@ -11,7 +11,7 @@ export function Certificate({category,startdate,setMode,setStartdate, certificat
                     c_name : certificate['c_name'],
                     c_agency : certificate['c_agency'],
                 });
-                setStartdate(startdate);
+                setStartdate(new Date(certificate['issue_date']));
                 }}>Edit </Button>
                 <Button variant="outline" onClick={() => api.deleteInfo(category,certificate)} style={{color:"red"}}>
                     Delete
