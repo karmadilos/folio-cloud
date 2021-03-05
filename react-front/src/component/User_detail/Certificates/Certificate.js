@@ -1,10 +1,10 @@
 import { Button, Card } from 'react-bootstrap';
-import { EducationCard } from './EducationCard'
+import { CertificateCard } from './CertificateCard'
 import * as api from '../../../Api/Api'
-export function Education({category,mode,setMode, education, isState, UpdateEdu, PostEdu, setInputs,ChangeInput}){
+export function Certificate({category,mode,setMode, education, isState, UpdateData, PostData, setInputs,ChangeInput}){
     return<>
         <Card.Body>
-            <EducationCard education={education}/>
+            <CertificateCard education={education}/>
             {isState &&(<>
                 <Button variant="outline-primary" onClick={() => {setMode("update"); setInputs({
                     id : education['id'],

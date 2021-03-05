@@ -1,3 +1,4 @@
+import datetime
 import pymysql
 from flask import Flask, jsonify, request, session, render_template
 from flask_restful import reqparse, abort, Api, Resource
@@ -167,12 +168,18 @@ class Education(Resource):
             return jsonify(status = "success", result = {"s_name": s_name})
         return jsonify(status = "fail", result = {"error": error})
     
-    # @jwt_required()    
-    # def put(self,id):
-    #     current_user = get_jwt_identity()
-    #     args = parser.parse_args()
-        
-    #     return jsonify(status = "success", result = {})
+    @jwt_required()    
+    def put(self,id):
+        current_user = get_jwt_identity()
+        데이터 = request.get_json()
+        s_name = 데이터['s_name']
+        major = 데이터['major']
+        state = 데이터['state']
+        print(s_name, major, state, id)
+        sql = "UPDATE education SET `s_name` = %s,`major` = %s,`state`= %s WHERE id = %s"
+        cursor.execute(sql, (s_name, major, state ,id))
+        db.commit()
+        return jsonify(status = "success", result = {"s_name": s_name})
     
     @jwt_required()
     def delete(self,id):
@@ -183,7 +190,7 @@ class Education(Resource):
         cursor.execute(sql, id)
         db.commit()        
         return jsonify(status = "success", result = "delete")
-api.add_resource(Education, '/educations/', '/educations/<int:id>')
+api.add_resource(Education, '/educations', '/educations/<int:id>')
 
 class Award(Resource):
     @jwt_required()
@@ -305,4 +312,4 @@ class Project(Resource):
 api.add_resource(Project, '/project')
     
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000, debug=True)
+    app.run('0.0.0.0', port=5000, debug=True , threaded=False)

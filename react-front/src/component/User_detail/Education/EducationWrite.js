@@ -1,24 +1,15 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {Form, Button,} from 'react-bootstrap';
-export function EducationWrite({mode, PostEdu, UpdateEdu, education, setMode, setInputs,ChangeInput}) {
-    function Submit(){
-        if (mode == "update"){
-            UpdateEdu()
-        }
-        else{
-            PostEdu()
-        }
-    }
-
+export function EducationWrite({mode, PostEdu, UpdateEdu, inputs, setMode, ChangeInput}) {
     return (
-        <Form onSubmit={() => Submit} >
+        <Form onSubmit={(e) => {e.preventDefault(); mode =="update" ? UpdateEdu() : PostEdu()} } >
             <Form.Group controlId="formBasicName">
-                <Form.Control name="s_name" type="text" placeholder="학교 이름" onChange={ChangeInput}/>
+                <Form.Control value={inputs.s_name} name="s_name" type="text" placeholder="학교 이름" onChange={ChangeInput}/>
             </Form.Group>
             <Form.Group controlId="formBasicMajor">
-                <Form.Control name="major" type="text" placeholder="전공" onChange={ChangeInput}/>
+                <Form.Control value={inputs.major} name="major" type="text" placeholder="전공" onChange={ChangeInput}/>
             </Form.Group>
-            <div className="mb-3">
+            <div className="justify-content-md-center mb-3">
                 <Form.Check
                 type="radio"
                 label="재학 중"

@@ -3,10 +3,11 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { useHistory } from "react-router-dom";
 import { Awards } from "../component/User_detail/Awards/Awards";
 import { Certificates } from "../component/User_detail/Certificates/Certificates";
-import { Educations } from "../component/User_detail/Education/Educations";
+
 import { Profile } from "../component/User_detail/Profile/Profile";
 import { Projects } from "../component/User_detail/Projects/Projects";
 import * as api from "../Api/Api";
+import { Educations } from "../component/User_detail/Education/Educations";
 export function User() {
     const [user, setUser] = useState([]);
     const history = useHistory();
@@ -32,10 +33,10 @@ export function User() {
                     {/* <Profile user_id={user.id} isState/> */}
                 </Col>
                 <Col sm="8">
-                    <Educations user_id={user.id} isState={user.id == current_user}/>
-                    {/* <Awards awards={awards} isState/>
-                    <Certificates certificates={certificates} isState/>       
-                    <Projects projects={projects} isState/> */}
+                    <Educations isState={user.id == current_user}/>
+                    {/* <Awards awards={awards} isState/> */}
+                    <Certificates isState={user.id == current_user}/>       
+                    {/* <Projects projects={projects} isState/> */}
                 </Col>
             </Row>
         </Container>

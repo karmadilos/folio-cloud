@@ -1,12 +1,14 @@
-import { Card,Button } from 'react-bootstrap';
+import { Card,Button, CardGroup } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import * as api from '../../../Api/Api';
 import { Education } from './Education';
-export function Educations({user_id, isState}){
-    const category='educations/';
+import { EducationWrite } from './EducationWrite';
+export function Educations({isState}){
+    const category='educations';
     const [mode, setMode]= useState("");
     const [educations, setEducations] = useState([]);
     const [inputs, setInputs] = useState({
+        id : "",
         s_name : "",
         major : "",
         state : "",
@@ -18,10 +20,17 @@ export function Educations({user_id, isState}){
 
     const PostEdu = () =>{
         api.addInfo(category,inputs);
+        setMode("");
     }
 
     const UpdateEdu = () =>{
         api.fixInfo(category,inputs);
+        setInputs({
+            s_name : "",
+            major : "",
+            state :"",             
+        });
+        setMode("")
     }
 
     useEffect(() => {
@@ -30,14 +39,14 @@ export function Educations({user_id, isState}){
         }
         server();
     },[]);
-    console.log(mode);
     return<>
         <Card className="justify-content-md-center p-3" border="dark" style={{ width: '50rem' }}>
             <Card.Title>학력</Card.Title>
             {educations && educations.map((education,index) =>
                 <Education key={index} category={category} education={education} isState={isState} mode={mode} PostEdu={PostEdu} setMode={setMode} UpdateEdu={UpdateEdu} setInputs={setInputs} ChangeInput={ChangeInput}/>
             )}
-            {isState && <Button onClick={() => setMode("post")} style={{width:'3rem'}}>+</Button>}
+            {mode && <EducationWrite mode={mode} UpdateEdu={UpdateEdu} PostEdu={PostEdu} setMode={setMode} inputs={inputs} setInputs={setInputs} ChangeInput={ChangeInput} />}
+            {isState && <CardGroup className="justify-content-md-center"><Button onClick={() => setMode("post")} style={{width:'3rem'}}>+</Button></CardGroup>}
         </Card>
     </>
 }
