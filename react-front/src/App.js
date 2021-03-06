@@ -2,19 +2,19 @@ import 'bootstrap/dist/css/bootstrap.css'
 import { Login } from './Page/Login';
 import { Signup } from './Page/Signup'
 import { Route,Switch } from 'react-router-dom';
-import { Nav } from './component/Nav';
+import { Header } from './component/Header';
 import { User } from './Page/User';
+import { UserList } from './Page/UserList';
 
 function App() {
   return (
     <div>        
-      <Nav/>
+      <Header/>
       <Route>
         <Switch>
-          <Route exact path="/"><Login/></Route>
-          <Route path="/login/"><Login/></Route>
-          <Route path="/signup/"><Signup/></Route>
-          <Route path="/user/:user_id"><User/></Route>
+          <Route exact path="/"><UserList/></Route>
+          <Route path="/signup"><Signup/></Route>
+          <Route path="/user/:id"><User/></Route>
           <Route
           render={({ location }) => (
             <div>

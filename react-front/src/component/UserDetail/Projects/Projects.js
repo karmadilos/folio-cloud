@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import * as api from '../../../Api/Api';
 import { Project } from './Project';
 import { ProjectWrite } from './ProjectWrite';
-export function Projects({isState}){
+export function Projects({id,isState}){
     const category='projects';
     const [mode, setMode]= useState("");
     const [projects, setProjects] = useState([]);
@@ -32,7 +32,7 @@ export function Projects({isState}){
             end_date : dateToString(enddate)
         };
         api.addInfo(category,data);
-        setMode("");
+        ModeChange();
     }
 
     const UpdateData = () =>{
@@ -44,6 +44,10 @@ export function Projects({isState}){
             end_date : dateToString(enddate)
         };
         api.fixInfo(category,data);
+        ModeChange();
+    }
+
+    const ModeChange = () =>{
         setInputs({
             p_name : "",
             p_description : "", 
@@ -51,21 +55,22 @@ export function Projects({isState}){
         setStartdate(new Date());
         setEnddate(new Date());
         setMode("")
+        setMode("loading");
     }
 
     useEffect(() => {
         const server = async () => {
-            setProjects(await api.readInfo(category)); 
+            setProjects(await api.readInfo(category,id)); 
         }
         server();
-    },[]);
+    },[mode]);
     return<>
-        <Card className="justify-content-md-center my-3 p-3" border="dark" style={{ width: '50rem' }}>
+        <Card className="justify-content-md-center my-3 p-3" style={{ width: '50rem' }}>
             <Card.Title>프로젝트</Card.Title>
             {projects && projects.map((project,index) =>
-                <Project key={index} category={category} project={project} isState={isState} mode={mode} PostData={PostData} setMode={setMode} UpdateData={UpdateData} setInputs={setInputs} ChangeInput={ChangeInput} startdate={startdate} setStartdate={setStartdate} enddate={enddate} setEnddate={setEnddate}/>
+                <Project key={index} category={category} project={project} isState={isState} mode={mode} PostData={PostData} setMode={setMode} UpdateData={UpdateData} setInputs={setInputs} ChangeInput={ChangeInput} startdate={startdate} setStartdate={setStartdate} enddate={enddate} setEnddate={setEnddate} dateToString={dateToString}/>
             )}
-            {mode && <ProjectWrite mode={mode} UpdateData={UpdateData} PostData={PostData} setMode={setMode} inputs={inputs} setInputs={setInputs} ChangeInput={ChangeInput} startdate={startdate} setStartdate={setStartdate} enddate={enddate} setEnddate={setEnddate}/>}
+            {(mode == "post"|| mode == "update") && <ProjectWrite mode={mode} UpdateData={UpdateData} PostData={PostData} setMode={setMode} inputs={inputs} setInputs={setInputs} ChangeInput={ChangeInput} startdate={startdate} setStartdate={setStartdate} enddate={enddate} setEnddate={setEnddate}/>}
             {isState && <CardGroup className="justify-content-md-center"><Button onClick={() => setMode("post")} style={{width:'3rem'}}>+</Button></CardGroup>}
         </Card>
     </>

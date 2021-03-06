@@ -10,25 +10,26 @@ export async function Signup(data) {
     })
 }
 
-export function Login(data,history){
+export function Login(data){
     axios.post(url+'login',data)
     .then((response) => {
         if(response.data.access_token){
             localStorage.setItem("token",response.data.access_token);
             localStorage.setItem("user_id",response.data.user_id);
-            history.push(`/user/${response.data.user_id}`);
             window.location.reload();
         }
+        return response.data;
     })
 }
 
 export function Logout(){
     localStorage.removeItem("token");
     localStorage.removeItem("user_id");
+    window.location.reload();
 }
 
-export async function readInfo(category){
-    return await axios.get(url+category,{
+export async function readInfo(category,id){
+    return await axios.get(url+category+"/"+id,{
         headers: {
         Authorization: `Bearer ${token}`
       }
@@ -49,7 +50,6 @@ export async function addInfo(category,data){
     })
     .then((res) => {
         console.log(JSON.stringify(res));
-        window.location.reload();
     })
     .catch((e)=>{
         console.log(e);
@@ -64,7 +64,6 @@ export async function fixInfo(category,data){
     })
     .then((res) => {
         console.log(JSON.stringify(res));
-        window.location.reload();
     })
     .catch((e)=>{
         console.log(e);
@@ -80,23 +79,36 @@ export async function deleteInfo(category,data){
     })
     .then((res) => {
         console.log(JSON.stringify(res));
-        window.location.reload();
     })
     .catch((e)=>{
         console.log(e);
     })
 }
 
-export function Upload(data){
-    axios.post(url+'user/upload',data,{
+export async function fixUser(category,data){
+    console.log(data);
+    await axios.put(url+category+'/'+data.id,data,{
         headers: {
         Authorization: `Bearer ${token}`
       }
     })
     .then((res) => {
-        console.log(JSON.stringify(res));
+        console.log(JSON.stringify(res)); 
     })
     .catch((e)=>{
         console.log(e);
     })
+}
+
+export async function readUser(category){
+    return await axios.get(url+category,{
+        headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((res) => {
+        return res.data.result;
+    })
+    .catch((e)=>{
+        console.log(e);
+    });
 }
