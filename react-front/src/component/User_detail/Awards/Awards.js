@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import * as api from '../../../Api/Api';
 import { Award } from './Award';
 import { AwardWrite } from './AwardWrite';
-export function Awards({isState}){
+export function Awards({id,isState}){
     const category='awards';
     const [mode, setMode]= useState("");
     const [awards, setAwards] = useState([]);
@@ -34,7 +34,7 @@ export function Awards({isState}){
 
     useEffect(() => {
         const server = async () => {
-            setAwards(await api.readInfo(category)); 
+            setAwards(await api.readInfo(category,id)); 
         }
         server();
     },[]);

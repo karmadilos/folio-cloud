@@ -4,6 +4,7 @@ import { Signup } from './Page/Signup'
 import { Route,Switch } from 'react-router-dom';
 import { Nav } from './component/Nav';
 import { User } from './Page/User';
+import { UserList } from './Page/UserList';
 
 function App() {
   return (
@@ -14,7 +15,8 @@ function App() {
           <Route exact path="/"><Login/></Route>
           <Route path="/login/"><Login/></Route>
           <Route path="/signup/"><Signup/></Route>
-          <Route path="/user/:user_id"><User/></Route>
+          <Route path="/user/list"><UserList/></Route>
+          <Route path="/user/:id"><User/></Route>
           <Route
           render={({ location }) => (
             <div>

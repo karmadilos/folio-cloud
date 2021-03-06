@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import * as api from '../../../Api/Api';
 import { Project } from './Project';
 import { ProjectWrite } from './ProjectWrite';
-export function Projects({isState}){
+export function Projects({id,isState}){
     const category='projects';
     const [mode, setMode]= useState("");
     const [projects, setProjects] = useState([]);
@@ -55,7 +55,7 @@ export function Projects({isState}){
 
     useEffect(() => {
         const server = async () => {
-            setProjects(await api.readInfo(category)); 
+            setProjects(await api.readInfo(category,id)); 
         }
         server();
     },[]);

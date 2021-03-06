@@ -11,7 +11,7 @@ export function Nav(){
             <nav>
                 <ul>
                     <li><NavLink exact to="/">메인</NavLink></li>
-                    <li><NavLink to="/user/">네트워크</NavLink></li>
+                    <li><NavLink to="/user/list">네트워크</NavLink></li>
                     <li><NavLink to="/login" onClick={Logout}>Logout</NavLink></li>
                 </ul>
             </nav>

@@ -11,9 +11,8 @@ export function AwardCard({category, setMode, award, isState, setInputs}){
             {isState &&(<div className="justify-content-md-center p-3">
                 <Button variant="link" onClick={() => {setMode("update"); setInputs({
                     id : award['id'],
-                    s_name : award['s_name'],
-                    major : award['major'],
-                    state : award['state'],             
+                    a_name : award['a_name'],
+                    a_description : award['a_description'],    
                 });}}>Edit </Button>
                 <Button variant="link" onClick={() => api.deleteInfo(category,award)} style={{color:"red"}}>
                     Delete

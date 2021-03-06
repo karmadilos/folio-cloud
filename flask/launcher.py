@@ -96,42 +96,12 @@ def login():
             return jsonify(access_token = access_token, user_id = user[0])
     return jsonify(status = "fail", result = {"error": error})
 
-class User(Resource):
-    @jwt_required()
-    def get(self):
-        current_user = get_jwt_identity()   
-        sql = "SELECT * FROM `users` WHERE id = (%s)"
-        cursor.execute(sql, (current_user[1]))
-        user = cursor.fetchone()
-        result ={
-            "id" : user[0],
-            "email" : user[1],
-            "name" : user[3],
-            "intro" : user[4],
-        }
-        return jsonify(status = "success", result = result)
-
-    @jwt_required()    
-    def put(self):
-        current_user = get_jwt_identity()
-        데이터 = request.get_json()
-        print(데이터)
-        name = 데이터['name']
-        email = 데이터['email']
-        intro = 데이터['intro']
-        sql = "UPDATE users SET `name` = %s,`email` = %s,`intro`= %s WHERE id = %s"
-        cursor.execute(sql, (name, email, intro ,current_user[1]))
-        db.commit()
-        return jsonify(status = "success", result = {"name": name})
-    
-api.add_resource(User, '/users')
-
 class Education(Resource):
     @jwt_required()
-    def get(self):
+    def get(self,id):
         current_user = get_jwt_identity()   
         sql = "SELECT * FROM `educations` WHERE user_id = (%s)"
-        cursor.execute(sql, (current_user[1]))
+        cursor.execute(sql, id)
         educations = cursor.fetchall()
         result = [{
             "id" : education[0],
@@ -193,10 +163,10 @@ api.add_resource(Education, '/educations', '/educations/<int:id>')
 
 class Award(Resource):
     @jwt_required()
-    def get(self):
+    def get(self,id):
         current_user = get_jwt_identity()   
         sql = "SELECT * FROM `awards` WHERE user_id = (%s)"
-        cursor.execute(sql, (current_user[1]))
+        cursor.execute(sql, id)
         awards = cursor.fetchall()
         result = [{
             "id" : award[0],
@@ -233,8 +203,7 @@ class Award(Resource):
         데이터 = request.get_json()
         a_name = 데이터['a_name']
         a_description = 데이터['a_description']
-        print(a_name, a_description, state, id)
-        sql = "UPDATE awards SET `a_name` = %s,`a_description` = %s, WHERE id = %s"
+        sql = "UPDATE awards SET `a_name` = %s,`a_description` = %s WHERE id = %s"
         cursor.execute(sql, (a_name, a_description, id))
         db.commit()
         return jsonify(status = "success", result = {"a_name": a_name})
@@ -248,14 +217,14 @@ class Award(Resource):
         cursor.execute(sql, id)
         db.commit()        
         return jsonify(status = "success", result = "delete")
-api.add_resource(Award, '/awards')
+api.add_resource(Award, '/awards', '/awards/<int:id>')
 
 class Certificate(Resource):
     @jwt_required()
-    def get(self):
+    def get(self,id):
         current_user = get_jwt_identity()  
         sql = "SELECT * FROM `certificates` WHERE user_id = %s"
-        cursor.execute(sql, (current_user[1]))
+        cursor.execute(sql,id)
         certificates = cursor.fetchall()
         result = [{
             "id" : certificate[0],
@@ -306,11 +275,9 @@ api.add_resource(Certificate, '/certificates','/certificates/<int:id>')
 
 class Project(Resource):
     @jwt_required()
-    def get(self):
-        current_user = get_jwt_identity()   
-        args = parser.parse_args()     
+    def get(self,id):
         sql = "SELECT * FROM `projects` WHERE user_id = %s"
-        cursor.execute(sql, (current_user[1]))
+        cursor.execute(sql, id)
         projects = cursor.fetchall()
         result = [{
             "id" : project[0],
@@ -360,5 +327,49 @@ class Project(Resource):
         return jsonify(status = "success", result = "delete")
 api.add_resource(Project, '/projects','/projects/<int:id>')
     
+class User(Resource):
+    @jwt_required()
+    def get(self,id): 
+        sql = "SELECT * FROM users WHERE id = (%s)"
+        cursor.execute(sql, id)
+        user = cursor.fetchone()
+        result ={
+            "id" : user[0],
+            "email" : user[1],
+            "name" : user[3],
+            "intro" : user[4],
+        }
+        return jsonify(status = "success", result = result)
+
+    @jwt_required()    
+    def put(self,id):
+        current_user = get_jwt_identity()
+        데이터 = request.get_json()
+        print(데이터)
+        name = 데이터['name']
+        email = 데이터['email']
+        intro = 데이터['intro']
+        sql = "UPDATE users SET `name` = %s,`email` = %s,`intro`= %s WHERE id = %s"
+        cursor.execute(sql, (name, email, intro ,id))
+        db.commit()
+        return jsonify(status = "success", result = {"name": name})
+    
+api.add_resource(User, '/users' ,'/users/<int:id>')
+
+class UserList(Resource):
+    @jwt_required()
+    def get(self):
+        current_user = get_jwt_identity()   
+        sql = "SELECT * FROM `users`"
+        cursor.execute(sql)
+        users = cursor.fetchall()
+        result= [{
+            "id": user[0],
+            "email": user[1],
+            "name": user[3],
+            "intro": user[4],
+        } for user in users]
+        return jsonify(status = "success", result = result)
+api.add_resource(UserList, '/users/list')
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True , threaded=False)

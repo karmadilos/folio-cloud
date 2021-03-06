@@ -17,7 +17,6 @@ export function Login(data,history){
             localStorage.setItem("token",response.data.access_token);
             localStorage.setItem("user_id",response.data.user_id);
             history.push(`/user/${response.data.user_id}`);
-            window.location.reload();
         }
     })
 }
@@ -27,8 +26,8 @@ export function Logout(){
     localStorage.removeItem("user_id");
 }
 
-export async function readInfo(category){
-    return await axios.get(url+category,{
+export async function readInfo(category,id){
+    return await axios.get(url+category+"/"+id,{
         headers: {
         Authorization: `Bearer ${token}`
       }
@@ -49,7 +48,6 @@ export async function addInfo(category,data){
     })
     .then((res) => {
         console.log(JSON.stringify(res));
-        window.location.reload();
     })
     .catch((e)=>{
         console.log(e);
@@ -64,7 +62,6 @@ export async function fixInfo(category,data){
     })
     .then((res) => {
         console.log(JSON.stringify(res));
-        window.location.reload();
     })
     .catch((e)=>{
         console.log(e);
@@ -80,7 +77,6 @@ export async function deleteInfo(category,data){
     })
     .then((res) => {
         console.log(JSON.stringify(res));
-        window.location.reload();
     })
     .catch((e)=>{
         console.log(e);
@@ -88,17 +84,29 @@ export async function deleteInfo(category,data){
 }
 
 export async function fixUser(category,data){
-    console.log(category);
-    await axios.put(url+category,data,{
+    console.log(data);
+    await axios.put(url+category+'/'+data.id,data,{
         headers: {
         Authorization: `Bearer ${token}`
       }
     })
     .then((res) => {
         console.log(JSON.stringify(res)); 
-        window.location.reload();
     })
     .catch((e)=>{
         console.log(e);
     })
+}
+
+export async function readUser(category){
+    return await axios.get(url+category,{
+        headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((res) => {
+        return res.data.result;
+    })
+    .catch((e)=>{
+        console.log(e);
+    });
 }

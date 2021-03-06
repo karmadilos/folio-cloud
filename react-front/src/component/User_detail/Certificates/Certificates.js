@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import * as api from '../../../Api/Api';
 import { Certificate } from './Certificate';
 import { CertificateWrite } from './CertificateWrite';
-export function Certificates({isState}){
+export function Certificates({id,isState}){
     const category='certificates';
     const [mode, setMode]= useState("");
     const [certificates, setCertificates] = useState([]);
@@ -51,7 +51,7 @@ export function Certificates({isState}){
 
     useEffect(() => {
         const server = async () => {
-            setCertificates(await api.readInfo(category)); 
+            setCertificates(await api.readInfo(category,id)); 
         }
         server();
     },[]);

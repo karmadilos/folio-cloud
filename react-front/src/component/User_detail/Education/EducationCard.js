@@ -14,7 +14,7 @@ export function EducationCard({category, setMode, education, isState, setInputs}
                     major : education['major'],
                     state : education['state'],             
                 });}}>Edit </Button>
-                <Button variant="link" onClick={() => api.deleteInfo(category,education)} style={{color:"red"}}>
+                <Button variant="link" onClick={() => {api.deleteInfo(category,education); setMode("");}} style={{color:"red"}}>
                     Delete
                 </Button></div>)}
         </Row>

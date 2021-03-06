@@ -2,20 +2,25 @@ import React, { useState } from 'react';
 import { Card, Row, Button } from 'react-bootstrap';
 import {ProfileCardWrite} from './ProfileCardWrite';
 import * as api from '../../../Api/Api'
-export function ProfileCard({user, isState, category}){
+import { useHistory } from 'react-router';
+export function ProfileCard({user, isState, category, id}){
+    const history =useHistory();
     const [mode, setMode] =useState("");
     const [inputs, setInputs] =useState({
+        id : "",
         name : "",
         email : "",
         intro : "",
     });
+    console.log(inputs);
     const ChangeInput = e => {
         const { name, value } = e.target;
         setInputs({ ...inputs, [name]: value });
     };
     const UpdateDate = (e) =>{
         e.preventDefault();
-        console.log(api.fixUser(category,inputs));
+        console.log(inputs);
+        api.fixUser(category,inputs);
         setInputs({
             name : "",
             email : "",
@@ -33,11 +38,12 @@ export function ProfileCard({user, isState, category}){
                 <Card.Subtitle className="mb-2 text-muted h6">{user.email}</Card.Subtitle>
                 <Card.Text>{user.intro}</Card.Text>            
                 <Row className="justify-content-md-center">
-                    {isState &&<Button className variant="link" onClick={() => {setMode("edit"); setInputs({
+                    {isState ?<Button variant="link" onClick={() => {setMode("edit"); setInputs({
+                    id: id,
                     name : user['name'],
                     email : user['email'],
                     intro : user['intro']            
-                });}}>Edit </Button>}
+                });}}>Edit </Button>:<Card.Link href="" onClick={() => history.push(`/user/${user.id}`)}>Show User</Card.Link>}
                 </Row>
             </Card.Body>
             {mode === "edit" && <ProfileCardWrite UpdateDate={UpdateDate} inputs={inputs} setMode={setMode} ChangeInput={ChangeInput}/>}

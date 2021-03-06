@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import * as api from '../../../Api/Api';
 import { Education } from './Education';
 import { EducationWrite } from './EducationWrite';
-export function Educations({isState}){
+export function Educations({id, isState}){
     const category='educations';
     const [mode, setMode]= useState("");
     const [educations, setEducations] = useState([]);
@@ -35,10 +35,11 @@ export function Educations({isState}){
 
     useEffect(() => {
         const server = async () => {
-            setEducations(await api.readInfo(category)); 
+            setEducations(await api.readInfo(category,id)); 
         }
         server();
     },[]);
+    
     return<>
         <Card className="justify-content-md-center p-3" style={{ width: '50rem' }}>
             <Card.Title>학력</Card.Title>
