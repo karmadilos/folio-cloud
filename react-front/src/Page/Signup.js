@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import {useHistory} from "react-router";
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import './Signup.css'
 import * as api from '../Api/Api'
-
-
 export function Signup(){
     const history = useHistory();
     const [inputs, setInputs] = useState({
@@ -24,21 +23,39 @@ export function Signup(){
         history.push('/')
     }
 
-    return<>
-    <div className="Signup">
-        <form onSubmit={signup}>
-            <p>Email address</p>
-            <input name="email"  type="text" placeholder="Enter Email" onChange={handleChange}/>
-            <p>Password</p>
-            <input name="password"  type="password" placeholder="Password" onChange={handleChange}/>
-            <p>Confirm Password</p>
-            <input name="c_password" type="password"  placeholder="Password" onChange={handleChange}/>
-            <p>Name</p>
-            <input name="name"  type="text" placeholder="Name" onChange={handleChange}/>
-            <div className="button">
-                <button className="signup" type="submit">회원가입</button>
-            </div>
-        </form>
-    </div>
-</>
+
+
+    return(
+    <Container className="p-5">
+        <Row className="justify-content-md-center">
+            <Col>
+                <Form onSubmit={signup}>
+                    <Form.Group controlId="formBasicEmail">
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control type="email" placeholder="email" onChange={handleChange}/>
+                        {<Form.Text muted>Check your email.</Form.Text>}
+                    </Form.Group>
+                    <Form.Group controlId="formBasicPassword">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control type="password" placeholder="Password" onChange={handleChange}/>
+                    </Form.Group>
+                    <Form.Group controlId="formBasicPasswordConfirm">
+                        <Form.Label>Confirm Password</Form.Label>
+                        <Form.Control type="password" placeholder="Password" onChange={handleChange}/>
+                        {<Form.Text muted>Check your password.</Form.Text>}
+                    </Form.Group>
+                    <Form.Group controlId="formBasicName">
+                        <Form.Label>Name</Form.Label>
+                        <Form.Control type="text" placeholder="Name" onChange={handleChange} />
+                    </Form.Group>
+                    <Form.Row className="justify-content-md-center">
+                        <Button variant="primary" type="submit">
+                            회원가입
+                        </Button>
+                    </Form.Row>
+                </Form>
+            </Col>
+        </Row>
+    </Container>
+    );
 }

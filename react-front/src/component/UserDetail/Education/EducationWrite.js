@@ -1,9 +1,9 @@
 import React from "react";
-import {Form, Button,} from 'react-bootstrap';
-export function EducationWrite({mode, PostEdu, UpdateEdu, inputs, setMode, ChangeInput}) {
+import {Form, Button} from 'react-bootstrap';
+export function EducationWrite({mode, PostData, UpdateData, inputs, setMode, ChangeInput}) {
     console.log(inputs.state);
     return (
-        <Form className="justify-content-md-center p-3" onSubmit={(e) => {e.preventDefault(); mode =="update" ? UpdateEdu() : PostEdu()} } >
+        <Form className="justify-content-md-center p-3" onSubmit={(e) => {e.preventDefault(); mode =="update" ? UpdateData() : PostData()} } >
             <Form.Group controlId="formBasicName">
                 <Form.Control value={inputs.s_name} name="s_name" type="text" placeholder="학교 이름" onChange={ChangeInput}/>
             </Form.Group>

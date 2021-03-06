@@ -14,7 +14,7 @@ export function AwardCard({category, setMode, award, isState, setInputs}){
                     a_name : award['a_name'],
                     a_description : award['a_description'],    
                 });}}>Edit </Button>
-                <Button variant="link" onClick={() => api.deleteInfo(category,award)} style={{color:"red"}}>
+                <Button variant="link" onClick={() => {api.deleteInfo(category,award); {setMode("delete")}}} style={{color:"red"}}>
                     Delete
                 </Button></div>)}
         </Row>

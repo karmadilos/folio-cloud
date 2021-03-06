@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
 import * as api from '../../../Api/Api'
-export function EducationCard({category, setMode, education, isState, setInputs}){
+export function EducationCard({category, setMode, education, isState, setInputs, ModeChange}){
     return<Row className="p-2">
             <Col>
                 {education.s_name}<br/>
@@ -14,7 +14,7 @@ export function EducationCard({category, setMode, education, isState, setInputs}
                     major : education['major'],
                     state : education['state'],             
                 });}}>Edit </Button>
-                <Button variant="link" onClick={() => {api.deleteInfo(category,education); setMode("");}} style={{color:"red"}}>
+                <Button variant="link" onClick={() => {api.deleteInfo(category,education); {setMode("delete")};}} style={{color:"red"}}>
                     Delete
                 </Button></div>)}
         </Row>

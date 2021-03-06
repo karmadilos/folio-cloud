@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {useHistory} from "react-router";
 import * as api from '../Api/Api'
-import './Login.css'
-import { NavLink } from 'react-router-dom'
+import './Login.css';
+import { Card, Form, Button } from 'react-bootstrap';
 
 export function Login(){
     const history = useHistory();
@@ -18,21 +18,26 @@ export function Login(){
 
     function login(e){
         e.preventDefault();
-        api.Login(inputs,history);
+        const res = api.Login(inputs);
+        console.log(res);
     }
-
     return<>
-        <div className="Login">
-            <form onSubmit={login} >
-                <p>Email address</p>
-                <input name="email" type="text" placeholder="Enter Email" onChange={handleChange}/>
-                <p>Password</p>
-                <input name="password" type="password" placeholder="Password" onChange={handleChange}/>
-                <div className="button">
-                    <button className="login" type='submit'>로그인</button>
-                    <NavLink exact to="/signup/"><button className="signup" >회원가입</button></NavLink>
-                </div>
-            </form>
-        </div>
+        <Card className="p-2">
+            <h5>Login</h5>
+            <Form className="justify-content-md-center p-3" onSubmit={login} >
+                <Form.Group controlId="formBasicEmail">
+                    <Form.Control name="email" type="email" placeholder="email" onChange={handleChange}/>
+                </Form.Group>
+                <Form.Group controlId="formBasicPassword">
+                    <Form.Control name="password" type="password" placeholder="Password" onChange={handleChange}/>
+                </Form.Group>
+                <Button className="my-1" size="sm" variant="outline-info" type="submit" >
+                    로그인
+                </Button>
+                <Button className="mx-2" size="sm" variant="outline-secondary" onClick={() => history.push(`/signup`)}>
+                    회원가입
+                </Button>
+            </Form>
+        </Card>
     </>
 }

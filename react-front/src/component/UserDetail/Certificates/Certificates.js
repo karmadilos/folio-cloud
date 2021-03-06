@@ -30,7 +30,7 @@ export function Certificates({id,isState}){
             issue_date : dateToString(startdate)
         }
         api.addInfo(category,data);
-        setMode("");
+        ModeChange();
     }
 
     const UpdateData = () =>{
@@ -41,12 +41,16 @@ export function Certificates({id,isState}){
             issue_date : dateToString(startdate)
         }
         api.fixInfo(category,data);
+        ModeChange()
+    }
+
+    const ModeChange = () =>{
         setInputs({
             c_name : "",
             c_agency : "", 
         });
         setStartdate(new Date());
-        setMode("")
+        setMode("loading");
     }
 
     useEffect(() => {
@@ -54,14 +58,14 @@ export function Certificates({id,isState}){
             setCertificates(await api.readInfo(category,id)); 
         }
         server();
-    },[]);
+    },[mode]);
     return<>
         <Card className="justify-content-md-center my-3 p-3" style={{ width: '50rem' }}>
             <Card.Title>자격증</Card.Title>
             {certificates && certificates.map((certificate,index) =>
                 <Certificate key={index} category={category} certificate={certificate} isState={isState} mode={mode} PostData={PostData} setMode={setMode} UpdateData={UpdateData} setInputs={setInputs} ChangeInput={ChangeInput} startdate={startdate} setStartdate={setStartdate}/>
             )}
-            {mode && <CertificateWrite mode={mode} UpdateData={UpdateData} PostData={PostData} setMode={setMode} inputs={inputs} setInputs={setInputs} ChangeInput={ChangeInput} startdate={startdate} setStartdate={setStartdate} />}
+            {(mode == "post"|| mode == "update") && <CertificateWrite mode={mode} UpdateData={UpdateData} PostData={PostData} setMode={setMode} inputs={inputs} setInputs={setInputs} ChangeInput={ChangeInput} startdate={startdate} setStartdate={setStartdate}/>}
             {isState && <CardGroup className="justify-content-md-center"><Button onClick={() => setMode("post")} style={{width:'3rem'}}>+</Button></CardGroup>}
         </Card>
     </>

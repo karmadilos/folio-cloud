@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Row, Button } from 'react-bootstrap';
 import {ProfileCardWrite} from './ProfileCardWrite';
 import * as api from '../../../Api/Api'
-import { useHistory } from 'react-router';
-export function ProfileCard({user, isState, category, id}){
-    const history =useHistory();
+import { useHistory, useParams } from "react-router-dom";
+export function ProfileCard({isState, category, id}){
+    const params = useParams();
+    const history = useHistory();
+    const [user, setUser] = useState([]);
     const [mode, setMode] =useState("");
     const [inputs, setInputs] =useState({
         id : "",
@@ -28,7 +30,19 @@ export function ProfileCard({user, isState, category, id}){
         });
         setMode("");
     }
-    const url = "https://picsum.photos/id/"+0+"/1000/1000/"
+    useEffect(() => {
+        if(localStorage.getItem('token')){
+            const server = async () => {
+                setUser(await api.readInfo(category,params.id));
+            }
+            server();
+        }
+        else{
+            alert("로그인이 필요한 서비스입니다!");
+            history.push('/');
+        }
+    },[mode]);
+    const url = "https://picsum.photos/id/"+params.id+"/1000/1000/"
     return<Card className="mb-2" >
             <Card.Body>
                 <Row className="justify-content-md-center">
@@ -38,12 +52,12 @@ export function ProfileCard({user, isState, category, id}){
                 <Card.Subtitle className="mb-2 text-muted h6">{user.email}</Card.Subtitle>
                 <Card.Text>{user.intro}</Card.Text>            
                 <Row className="justify-content-md-center">
-                    {isState ?<Button variant="link" onClick={() => {setMode("edit"); setInputs({
+                    {isState &&<Button variant="link" onClick={() => {setMode("edit"); setInputs({
                     id: id,
                     name : user['name'],
                     email : user['email'],
                     intro : user['intro']            
-                });}}>Edit </Button>:<Card.Link href="" onClick={() => history.push(`/user/${user.id}`)}>Show User</Card.Link>}
+                });}}>Edit </Button>}
                 </Row>
             </Card.Body>
             {mode === "edit" && <ProfileCardWrite UpdateDate={UpdateDate} inputs={inputs} setMode={setMode} ChangeInput={ChangeInput}/>}

@@ -17,7 +17,7 @@ export function ProjectCard({category, setMode, project, isState, setInputs, set
                 setStartdate(new Date(project['start_date']));
                 setEnddate(new Date(project['end_date']));
                 }}>Edit </Button>
-                <Button variant="link" onClick={() => api.deleteInfo(category,project)} style={{color:"red"}}>
+                <Button variant="link" onClick={() => {api.deleteInfo(category,project); setMode("delete")}} style={{color:"red"}}>
                     Delete
                 </Button></div>)}
         </Row>

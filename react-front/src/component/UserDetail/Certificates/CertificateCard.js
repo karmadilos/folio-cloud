@@ -16,7 +16,7 @@ export function CertificateCard({certificate, setMode, category, isState, setInp
                 });
                 setStartdate(new Date(certificate['issue_date']));
                 }}>Edit </Button>
-                <Button variant="link" onClick={() => api.deleteInfo(category,certificate)} style={{color:"red"}}>
+                <Button variant="link" onClick={() => {api.deleteInfo(category,certificate); setMode("delete")}} style={{color:"red"}}>
                     Delete
                 </Button></div>)}
         </Row>

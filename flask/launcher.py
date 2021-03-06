@@ -51,7 +51,7 @@ def register():
             error = 'Password가 유효하지 않습니다.'
         # 이미 등록된 계정이라면?
         sql = 'SELECT id FROM users WHERE email = %s'
-        cursor.execute(sql, (email,))
+        cursor.execute(sql,email)
         result = cursor.fetchone()
         if result is not None:
             error = '{} 계정은 이미 등록된 계정입니다.'.format(email)
@@ -61,7 +61,7 @@ def register():
             sql = "INSERT INTO `users` (`email`, `password`,`name`) VALUES (%s, %s, %s)"
             cursor.execute(sql, ( email, generate_password_hash(password), name))
             db.commit()
-            return jsonify(status = "success", result = {"name": name, "email": email})
+            return jsonify(status = "success", error = error , result = {"name": name, "email": email})
         
         
     # 에러 메세지를 반환합니다.
@@ -357,9 +357,7 @@ class User(Resource):
 api.add_resource(User, '/users' ,'/users/<int:id>')
 
 class UserList(Resource):
-    @jwt_required()
     def get(self):
-        current_user = get_jwt_identity()   
         sql = "SELECT * FROM `users`"
         cursor.execute(sql)
         users = cursor.fetchall()

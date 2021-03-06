@@ -10,20 +10,22 @@ export async function Signup(data) {
     })
 }
 
-export function Login(data,history){
+export function Login(data){
     axios.post(url+'login',data)
     .then((response) => {
         if(response.data.access_token){
             localStorage.setItem("token",response.data.access_token);
             localStorage.setItem("user_id",response.data.user_id);
-            history.push(`/user/${response.data.user_id}`);
+            window.location.reload();
         }
+        return response.data;
     })
 }
 
 export function Logout(){
     localStorage.removeItem("token");
     localStorage.removeItem("user_id");
+    window.location.reload();
 }
 
 export async function readInfo(category,id){
