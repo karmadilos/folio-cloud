@@ -2,7 +2,7 @@ import React from "react";
 import {Form, Button,} from 'react-bootstrap';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-export function CertificateWrite({mode,inputs, PostData, UpdateData, setMode, ChangeInput, setStartdate, startdate}) {
+export function CertificateWrite({mode, error, inputs, PostData, UpdateData, setMode, ChangeInput, setStartdate, startdate}) {
     return (
         <Form className="justify-content-md-center p-3" onSubmit={(e) => {e.preventDefault(); mode =="update" ? UpdateData() : PostData()} } >
             <Form.Group controlId="formBasicName">
@@ -19,8 +19,9 @@ export function CertificateWrite({mode,inputs, PostData, UpdateData, setMode, Ch
                 selected={startdate}
                 onChange={date => setStartdate(date)}
                 />
+            {!error &&<Form.Text style={{ color : "red"}}>자격증은 필수 입니다.</Form.Text>}
             <div className="justify-content-md-center">
-                <Button className="mx-1 my-3" variant="primary" type="submit" >
+                <Button disabled={!error} className="mx-1 my-3" variant="primary" type="submit" >
                     확인
                 </Button>
                 <Button onClick={()=>setMode("")}  variant="primary" >

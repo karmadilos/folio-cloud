@@ -17,8 +17,8 @@ export function Login(data){
             localStorage.setItem("token",response.data.access_token);
             localStorage.setItem("user_id",response.data.user_id);
             window.location.reload();
-        }
-        return response.data;
+        }else{
+        alert(response.data.error);}
     })
 }
 

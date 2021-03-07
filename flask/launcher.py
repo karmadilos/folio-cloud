@@ -94,7 +94,7 @@ def login():
         if error is None:
             access_token = create_access_token(identity=(email,user[0]))
             return jsonify(access_token = access_token, user_id = user[0])
-    return jsonify(status = "fail", result = {"error": error})
+    return jsonify(status = "fail", error = error)
 
 class Education(Resource):
     @jwt_required()

@@ -20,21 +20,22 @@ export function UserList(){
     return<>
     <Container className="p-3" fluid>
         { !current_user ? 
-        <Row className="justify-content-md-end">
-            <Col xs={3}>
-            <Login/>
-            </Col>
-        </Row>
-        :
-        <Row className="justify-content-md-center">
-            <Col xs={5}>
-                <Search/>
-            </Col>
-        </Row>}
+            <Row className="justify-content-md-end">
+                <Col className="mx-lg-3" xs={3}>
+                <Login/>
+                </Col>
+            </Row>
+            :
+            <Row className="justify-content-md-center">
+                <Col xs={5}>
+                    <Search/>
+                </Col>
+            </Row>
+        }
         <Row>
             <Col>
                 <CardColumns className="p-3">
-                {users && users.map((user,index)=><Card className="mb-2" key={index}><UserCard user={user}/></Card>)}
+                {users && users.map((user,index)=><Card hover style={{boxShadow : "4px 2px 10px rgba(136, 165, 191, 0.48), -4px -2px 10px #FFFFFF"}} className="mb-5"  key={index}><UserCard user={user}/></Card>)}
                 </CardColumns>
             </Col>
         </Row>

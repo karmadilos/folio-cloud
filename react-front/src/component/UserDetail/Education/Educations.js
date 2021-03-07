@@ -13,6 +13,8 @@ export function Educations({id, isState}){
         major : "",
         state : "",
     });
+    const [error, setError] = useState(false);
+
     const ChangeInput = e => {
         const { name, value } = e.target;
         setInputs({ ...inputs, [name]: value });
@@ -37,6 +39,21 @@ export function Educations({id, isState}){
         setMode("loading");
     }
 
+    const postChange = () =>{
+        setInputs({
+            s_name : "",
+            major : "",
+            state :"",             
+        });
+        setMode("post");
+    }
+
+    useEffect(() =>{
+        if(inputs.s_name){
+            setError(true);
+        }
+    },[inputs])
+
     useEffect(() => {
         const server = async () => {
             setEducations(await api.readInfo(category,id)); 
@@ -45,13 +62,13 @@ export function Educations({id, isState}){
     },[mode]);
     console.log(mode);
     return<>
-        <Card className="justify-content-md-center p-3" style={{ width: '50rem' }}>
+        <Card className="justify-content-md-center p-3" style={{boxShadow : "4px 2px 10px rgba(136, 165, 191, 0.48), -4px -2px 10px #FFFFFF"}}>
             <Card.Title>학력</Card.Title>
             {educations && educations.map((education,index) =>
                 <Education key={index} category={category} education={education} isState={isState} mode={mode} PostData={PostData} setMode={setMode} UpdateData={UpdateData} setInputs={setInputs} ChangeInput={ChangeInput} ModeChange={ModeChange}/>
             )}
-            {(mode == "post"|| mode == "update") && <EducationWrite mode={mode} UpdateData={UpdateData} PostData={PostData} setMode={setMode} inputs={inputs} setInputs={setInputs} ChangeInput={ChangeInput}/>}
-            {isState && <CardGroup className="justify-content-md-center"><Button onClick={() => setMode("post")} style={{width:'3rem'}}>+</Button></CardGroup>}
+            {(mode == "post"|| mode == "update") && <EducationWrite mode={mode} error={error} UpdateData={UpdateData} PostData={PostData} setMode={setMode} inputs={inputs} setInputs={setInputs} ChangeInput={ChangeInput}/>}
+            {isState && <CardGroup className="justify-content-md-center"><Button  onClick={() => {postChange()}} style={{width:'3rem',boxShadow : " 3px 3px 5px #0033b1, -3px -3px 5px #ffffff"}}>+</Button></CardGroup>}
         </Card>
     </>
 }

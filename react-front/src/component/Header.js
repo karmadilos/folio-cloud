@@ -10,7 +10,7 @@ export function Header(){
     return(
         <Navbar bg="dark" variant="dark">
             <Nav className="mr-auto">
-                <Navbar.Brand>Navbar</Navbar.Brand>
+                <Navbar.Brand>(☞ﾟヮﾟ)☞ Racer</Navbar.Brand>
             </Nav>
             <Nav>
                 <Nav.Item>

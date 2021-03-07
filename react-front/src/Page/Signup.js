@@ -29,7 +29,7 @@ export function Signup(){
         return regExp.test(email); 
     }
     function isPassword(password) {
-        var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,10}$/; 
+        var regExp = /(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,50}$/; 
         return regExp.test(password); 
     }
     useEffect(() => {
@@ -72,7 +72,7 @@ export function Signup(){
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
                         <Form.Control name="password" type="password" placeholder="Password" onChange={ChangeInput}/>
-                        {p_error &&<Form.Text warning> 8 ~ 10자 영문,숫자 조합</Form.Text>}
+                        {p_error &&<Form.Text warning> 숫자, 특문 각 1회 이상, 영문은 2개 이상 사용하여 8자리 이상 입력</Form.Text>}
                     </Form.Group>
                     <Form.Group controlId="formBasicPasswordConfirm">
                         <Form.Label>Confirm Password</Form.Label>

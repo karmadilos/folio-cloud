@@ -10,6 +10,7 @@ export function Login(){
         email: '',
         password: '',
     });
+    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -18,11 +19,10 @@ export function Login(){
 
     function login(e){
         e.preventDefault();
-        const res = api.Login(inputs);
-        console.log(res);
+        setError(api.Login(inputs));
     }
     return<>
-        <Card className="p-2">
+        <Card className="p-2" style={{boxShadow : "4px 2px 10px rgba(136, 165, 191, 0.48), -4px -2px 10px #FFFFFF"}}>
             <h5>Login</h5>
             <Form className="justify-content-md-center p-3" onSubmit={login} >
                 <Form.Group controlId="formBasicEmail">

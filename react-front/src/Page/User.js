@@ -21,8 +21,8 @@ export function User() {
 
     return (
         <Container fluid>
-            <Row className="justify-content-md-center p-5">
-                <Col sm="4">
+            <Row className="justify-content-between p-5">
+                <Col sm="3">
                     <ProfileCard id={params.id} category={category} isState={params.id == current_user}/>
                 </Col>
                 <Col sm="8">

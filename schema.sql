@@ -1,4 +1,4 @@
-create table if not exists user(
+create table if not exists users(
     id int not null AUTO_INCREMENT,
     email varchar(64) not null,
     password varchar(128) not null,
@@ -14,7 +14,7 @@ create table if not exists educations(
     state varchar(64) not null,
     user_id int not null,
     primary key(id),
-    foreign key(user_id) references user (id) 
+    foreign key(user_id) references users (id) 
 );
 
 create table if not exists awards(
@@ -23,7 +23,7 @@ create table if not exists awards(
     a_description varchar(64) not null,
     user_id int not null,
     primary key(id),
-    foreign key(user_id) references user (id) 
+    foreign key(user_id) references users (id) 
 );
 
 create table if not exists projects(
@@ -34,7 +34,7 @@ create table if not exists projects(
     end_date date not null,
     user_id int not null,
     primary key(id),
-    foreign key(user_id) references user (id) 
+    foreign key(user_id) references users (id) 
 );
 
 create table if not exists certificates(
@@ -44,7 +44,7 @@ create table if not exists certificates(
     issue_date date not null,
     user_id int not null,
     primary key(id),
-    foreign key(user_id) references user (id) 
+    foreign key(user_id) references users (id) 
 );
 
 create table if not exists profile(
@@ -52,5 +52,5 @@ create table if not exists profile(
     introduce varchar(64) not null,
     img varchar(512) not null,
     primary key(id),
-    foreign key(id) references user (id) 
+    foreign key(id) references users (id) 
 );

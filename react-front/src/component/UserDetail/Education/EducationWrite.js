@@ -1,6 +1,6 @@
 import React from "react";
 import {Form, Button} from 'react-bootstrap';
-export function EducationWrite({mode, PostData, UpdateData, inputs, setMode, ChangeInput}) {
+export function EducationWrite({mode, PostData, UpdateData, inputs, setMode, ChangeInput, error}) {
     console.log(inputs.state);
     return (
         <Form className="justify-content-md-center p-3" onSubmit={(e) => {e.preventDefault(); mode =="update" ? UpdateData() : PostData()} } >
@@ -48,9 +48,10 @@ export function EducationWrite({mode, PostData, UpdateData, inputs, setMode, Cha
                 id="state"
                 checked={inputs.state === "박사 졸업"}
                 onChange={ChangeInput}/>
+                {!error &&<Form.Text style={{ color : "red"}}>학교 이름은 필수 입니다.</Form.Text>}
             </div>
             <div className="justify-content-md-center">
-                <Button className="mx-1 my-3" variant="primary" type="submit" >
+                <Button disabled={!error} className="mx-1 my-3" variant="primary" type="submit" >
                     확인
                 </Button>
                 <Button onClick={()=>setMode("")}  variant="primary" >

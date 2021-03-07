@@ -43,7 +43,7 @@ export function ProfileCard({isState, category, id}){
         }
     },[mode]);
     const url = "https://picsum.photos/id/"+params.id+"/1000/1000/"
-    return<Card className="mb-2" >
+    return<Card  className="mb-2" style={{boxShadow : "4px 2px 10px rgba(136, 165, 191, 0.48), -4px -2px 10px #FFFFFF"}} >
             <Card.Body>
                 <Row className="justify-content-md-center">
                     <Card.Img className="mx-auto mb-3" style={{width : '100px'}} src={url}/> 
